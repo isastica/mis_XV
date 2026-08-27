@@ -606,11 +606,30 @@
       margin-top: 4px;
       line-height: 1.3;
     }
+    .photo-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+    }
     .photo-time {
       font-size: 0.7rem;
       color: var(--text-muted);
-      margin-top: 6px;
-      display: block;
+      display: inline-block;
+    }
+    .photo-delete-btn {
+      background: none;
+      border: none;
+      color: #b78a3c;
+      font-size: 0.78rem;
+      cursor: pointer;
+      padding: 3px 6px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .photo-delete-btn:hover {
+      color: #d93838;
+      background: #ffebeb;
     }
 
     .empty-gallery {
@@ -936,8 +955,38 @@
     }
     setInterval(updateCountdown, 1000);
     updateCountdown();
+  </script>
 
-    // 2. PHOTO UPLOAD & GUESTBOOK STORAGE
+  <!-- FIREBASE SCRIPTS (MODULE) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { 
+      getFirestore, 
+      collection, 
+      addDoc, 
+      onSnapshot, 
+      query, 
+      orderBy, 
+      deleteDoc, 
+      doc, 
+      serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAfWQKTx2ulacNfotO-BP9tK32gEAPqppE",
+      authDomain: "xv-de-isa.firebaseapp.com",
+      projectId: "xv-de-isa",
+      storageBucket: "xv-de-isa.firebasestorage.app",
+      messagingSenderId: "404613078588",
+      appId: "1:404613078588:web:078b216e83b094ef082d39"
+    };
+
+    // Initialize Firebase & Firestore
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const photosCollection = collection(db, "guest_photos");
+
     const photoFile = document.getElementById("photoFile");
     const previewContainer = document.getElementById("previewContainer");
     const previewImg = document.getElementById("previewImg");
@@ -945,10 +994,12 @@
     const dropzoneText = document.getElementById("dropzoneText");
     const photoUploadForm = document.getElementById("photoUploadForm");
     const galleryGrid = document.getElementById("galleryGrid");
+    const submitBtn = photoUploadForm.querySelector('button[type="submit"]');
 
     let currentPhotoBase64 = "";
+    let livePhotos = [];
 
-    // Handle File Selection
+    // Handle File Selection & Client-Side Compression
     photoFile.addEventListener("change", function(e) {
       const file = e.target.files[0];
       if (file) {
@@ -956,9 +1007,9 @@
         reader.onload = function(event) {
           const img = new Image();
           img.onload = function() {
-            // Resize image to max 1000px dimension for performance & localStorage
+            // Resize image to max 900px to ensure fast cloud syncing
             const canvas = document.createElement("canvas");
-            const maxDimension = 1000;
+            const maxDimension = 900;
             let width = img.width;
             let height = img.height;
 
@@ -979,7 +1030,7 @@
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0, width, height);
 
-            currentPhotoBase64 = canvas.toDataURL("image/jpeg", 0.82);
+            currentPhotoBase64 = canvas.toDataURL("image/jpeg", 0.78);
             previewImg.src = currentPhotoBase64;
             previewContainer.style.display = "block";
             dropzoneText.textContent = file.name;
@@ -998,58 +1049,94 @@
       dropzoneText.textContent = "Toca aquí para elegir foto o tomar foto con la cámara";
     });
 
-    // Load Saved Photos from localStorage
-    function getStoredPhotos() {
-      const stored = localStorage.getItem("isa_xv_photos");
-      return stored ? JSON.parse(stored) : [];
-    }
-
-    function savePhotosToStorage(photos) {
-      try {
-        localStorage.setItem("isa_xv_photos", JSON.stringify(photos));
-      } catch (err) {
-        alert("El almacenamiento local está lleno. Intenta con una imagen más liviana.");
-      }
-    }
-
-    // Render Gallery
-    function renderGallery() {
-      const photos = getStoredPhotos();
+    // Real-Time Cloud Listener (Updates live for everyone across all devices!)
+    const q = query(photosCollection, orderBy("createdAt", "desc"));
+    onSnapshot(q, (snapshot) => {
+      livePhotos = [];
       galleryGrid.innerHTML = "";
 
-      if (photos.length === 0) {
+      if (snapshot.empty) {
         galleryGrid.innerHTML = `
           <div class="empty-gallery">
             <i class="fa-solid fa-camera-retro"></i>
-            <p>Aún no hay fotos en el álbum.</p>
+            <p>Aún no hay fotos en el álbum común.</p>
             <p style="font-size: 0.9rem; margin-top: 5px;">¡Sé el primero en subir un lindo recuerdo!</p>
           </div>
         `;
         return;
       }
 
-      photos.forEach((item, index) => {
+      snapshot.forEach((docSnapshot) => {
+        const data = docSnapshot.data();
+        const photoId = docSnapshot.id;
+        livePhotos.push({ id: photoId, ...data });
+
+        const dateStr = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString('es-ES', {
+          day: 'numeric',
+          month: 'short',
+          hour: '2-digit',
+          minute: '2-digit'
+        }) : "Reciente";
+
         const card = document.createElement("div");
         card.className = "photo-card";
         card.innerHTML = `
-          <div class="photo-card-img-wrapper" onclick="openLightbox(${index})">
-            <img src="${item.image}" alt="Foto de ${item.name}" class="photo-card-img" />
+          <div class="photo-card-img-wrapper" data-id="${photoId}">
+            <img src="${data.image}" alt="Foto de ${escapeHtml(data.name)}" class="photo-card-img" />
           </div>
           <div class="photo-card-info">
             <div class="photo-guest-name">
               <i class="fa-solid fa-user-tag" style="font-size:0.8rem; color:#cba135;"></i>
-              ${escapeHtml(item.name)}
+              ${escapeHtml(data.name)}
             </div>
-            ${item.message ? `<div class="photo-guest-msg">"${escapeHtml(item.message)}"</div>` : ""}
-            <span class="photo-time"><i class="fa-regular fa-clock"></i> ${item.date}</span>
+            ${data.message ? `<div class="photo-guest-msg">"${escapeHtml(data.message)}"</div>` : ""}
+            <div class="photo-card-footer">
+              <span class="photo-time"><i class="fa-regular fa-clock"></i> ${dateStr}</span>
+              <button class="photo-delete-btn" data-delete-id="${photoId}" data-name="${escapeHtml(data.name)}" title="Eliminar foto de la nube">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
           </div>
         `;
         galleryGrid.appendChild(card);
       });
-    }
 
-    // Handle Form Submit
-    photoUploadForm.addEventListener("submit", function(e) {
+      // Attach click events for lightbox & delete
+      galleryGrid.querySelectorAll(".photo-card-img-wrapper").forEach(wrapper => {
+        wrapper.addEventListener("click", () => {
+          const id = wrapper.getAttribute("data-id");
+          const item = livePhotos.find(p => p.id === id);
+          if (item) openLightbox(item);
+        });
+      });
+
+      galleryGrid.querySelectorAll(".photo-delete-btn").forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          const id = btn.getAttribute("data-delete-id");
+          const name = btn.getAttribute("data-name");
+          if (confirm(`¿Deseas eliminar permanentemente la foto de "${name}" del álbum común?`)) {
+            try {
+              await deleteDoc(doc(db, "guest_photos", id));
+            } catch (err) {
+              alert("Error al eliminar la foto: " + err.message);
+            }
+          }
+        });
+      });
+    }, (error) => {
+      console.error("Error al cargar fotos de Firebase:", error);
+      galleryGrid.innerHTML = `
+        <div class="empty-gallery">
+          <i class="fa-solid fa-triangle-exclamation" style="color: #d93838;"></i>
+          <p>No se pudieron cargar las fotos en tiempo real.</p>
+          <p style="font-size: 0.85rem; color: #a37c2a; margin-top: 4px;">Asegúrate de haber habilitado Firestore Database en modo de prueba en Firebase.</p>
+        </div>
+      `;
+    });
+
+    // Handle Form Submit to Firebase Cloud
+    photoUploadForm.addEventListener("submit", async function(e) {
       e.preventDefault();
 
       if (!currentPhotoBase64) {
@@ -1060,58 +1147,49 @@
       const guestName = document.getElementById("guestName").value.trim();
       const guestMessage = document.getElementById("guestMessage").value.trim();
 
-      const newPhoto = {
-        name: guestName,
-        message: guestMessage,
-        image: currentPhotoBase64,
-        date: new Date().toLocaleDateString('es-ES', { 
-          day: 'numeric', 
-          month: 'short', 
-          year: 'numeric',
-          hour: '2-digit', 
-          minute: '2-digit' 
-        })
-      };
+      // Disable button and show uploading status
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo a la nube...';
 
-      const photos = getStoredPhotos();
-      photos.unshift(newPhoto);
-      savePhotosToStorage(photos);
+      try {
+        await addDoc(photosCollection, {
+          name: guestName,
+          message: guestMessage,
+          image: currentPhotoBase64,
+          createdAt: serverTimestamp()
+        });
 
-      // Reset Form
-      photoUploadForm.reset();
-      currentPhotoBase64 = "";
-      previewContainer.style.display = "none";
-      dropzoneText.textContent = "Toca aquí para elegir foto o tomar foto con la cámara";
+        // Reset Form
+        photoUploadForm.reset();
+        currentPhotoBase64 = "";
+        previewContainer.style.display = "none";
+        dropzoneText.textContent = "Toca aquí para elegir foto o tomar foto con la cámara";
 
-      // Refresh Gallery and Scroll to it
-      renderGallery();
-      document.getElementById("galeria").scrollIntoView({ behavior: 'smooth' });
+        document.getElementById("galeria").scrollIntoView({ behavior: 'smooth' });
+      } catch (err) {
+        console.error(err);
+        alert("Error al subir la foto a Firebase: " + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publicar en el Álbum';
+      }
     });
 
-    // 3. LIGHTBOX VIEWER
+    // Lightbox Functionality
     const lightbox = document.getElementById("lightbox");
     const lightboxImg = document.getElementById("lightboxImg");
     const lightboxCaption = document.getElementById("lightboxCaption");
     const lightboxClose = document.getElementById("lightboxClose");
 
-    window.openLightbox = function(index) {
-      const photos = getStoredPhotos();
-      const photo = photos[index];
-      if (photo) {
-        lightboxImg.src = photo.image;
-        lightboxCaption.innerHTML = `<strong>${escapeHtml(photo.name)}</strong>${photo.message ? `<br><em>"${escapeHtml(photo.message)}"</em>` : ""}`;
-        lightbox.style.display = "flex";
-      }
-    };
+    function openLightbox(photo) {
+      lightboxImg.src = photo.image;
+      lightboxCaption.innerHTML = `<strong>${escapeHtml(photo.name)}</strong>${photo.message ? `<br><em>"${escapeHtml(photo.message)}"</em>` : ""}`;
+      lightbox.style.display = "flex";
+    }
 
-    lightboxClose.addEventListener("click", function() {
-      lightbox.style.display = "none";
-    });
-
-    lightbox.addEventListener("click", function(e) {
-      if (e.target === lightbox) {
-        lightbox.style.display = "none";
-      }
+    lightboxClose.addEventListener("click", () => lightbox.style.display = "none");
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) lightbox.style.display = "none";
     });
 
     function escapeHtml(text) {
@@ -1121,6 +1199,8 @@
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
         .replace(/'/g, "&#039;");
     }
 
