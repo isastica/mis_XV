@@ -1,43 +1,1132 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My First Web Page</title>
+  <title>Mis XV Años - Isa | 26 de Septiembre 2026</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
-    body {
-      font-family: sans-serif;
+    :root {
+      --bg-cream: #fbf8f0;
+      --bg-card: #ffffff;
+      --gold-primary: #cba135;
+      --gold-dark: #8c6818;
+      --gold-light: #fbe69e;
+      --gold-gradient: linear-gradient(135deg, #d4af37 0%, #f6e27a 40%, #c99320 70%, #f7ea9b 100%);
+      --text-dark: #3a2e1d;
+      --text-muted: #7d6b53;
+      --border-gold: rgba(203, 161, 53, 0.4);
+      --shadow-gold: 0 10px 30px rgba(184, 134, 11, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      padding: 40px;
-      background: #f4f4f4;
+      padding: 0;
     }
-    .card {
-      max-width: 600px;
-      margin: auto;
-      background: white;
-      padding: 24px;
+
+    body {
+      background-color: var(--bg-cream);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 235, 179, 0.35) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 223, 128, 0.3) 0%, transparent 40%);
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 15px;
+    }
+
+    /* Main Invitation Card */
+    .main-card {
+      background: #fffdf9;
+      border-radius: 24px;
+      padding: 45px 24px;
+      position: relative;
+      border: 2px solid var(--border-gold);
+      box-shadow: var(--shadow-gold), 0 20px 40px rgba(0,0,0,0.06);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    /* Golden Ornate Corner Accents */
+    .corner-decor {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      opacity: 0.85;
+      pointer-events: none;
+    }
+    .corner-tl { top: 10px; left: 10px; }
+    .corner-tr { top: 10px; right: 10px; transform: scaleX(-1); }
+    .corner-bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+    .corner-br { bottom: 10px; right: 10px; transform: scale(-1); }
+
+    /* Sunflower Accents */
+    .sunflower-corner-top {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      font-size: 3.5rem;
+      filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15));
+      animation: gentle-sway 6s ease-in-out infinite alternate;
+      user-select: none;
+    }
+
+    .sunflower-corner-bottom {
+      position: absolute;
+      bottom: -10px;
+      right: -10px;
+      font-size: 3.5rem;
+      filter: drop-shadow(-2px -4px 6px rgba(0,0,0,0.15));
+      animation: gentle-sway 6s ease-in-out infinite alternate-reverse;
+      user-select: none;
+    }
+
+    @keyframes gentle-sway {
+      0% { transform: rotate(-4deg) scale(1); }
+      100% { transform: rotate(4deg) scale(1.05); }
+    }
+
+    /* Header & Crown */
+    .header-section {
+      text-align: center;
+      margin-bottom: 25px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tiara-icon {
+      font-size: 3.2rem;
+      color: #c99320;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 4px rgba(201, 147, 32, 0.4));
+      display: inline-block;
+      margin-bottom: 5px;
+      animation: shine-pulse 3s infinite;
+    }
+
+    @keyframes shine-pulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 2px 4px rgba(201, 147, 32, 0.4)); }
+      50% { transform: scale(1.06); filter: drop-shadow(0 4px 10px rgba(230, 185, 50, 0.8)); }
+    }
+
+    .sub-title-top {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      letter-spacing: 6px;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .roman-xv {
+      font-family: 'Cinzel', serif;
+      font-size: 3.8rem;
+      font-weight: 900;
+      letter-spacing: 8px;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: -5px 0;
+      text-shadow: 0 4px 12px rgba(140, 104, 24, 0.2);
+    }
+
+    .sub-title-bottom {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      letter-spacing: 5px;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .heart-divider {
+      color: var(--gold-primary);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 10px auto;
+      max-width: 250px;
+    }
+    .heart-divider::before, .heart-divider::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(to right, transparent, var(--gold-primary), transparent);
+    }
+
+    /* Name in Gold Script */
+    .celebrant-name {
+      font-family: 'Pinyon Script', cursive;
+      font-size: 5.8rem;
+      line-height: 1;
+      color: #9d7318;
+      background: linear-gradient(45deg, #a67c1e 10%, #f7df79 35%, #9d7318 60%, #ffe994 85%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 10px rgba(212, 175, 55, 0.3);
+      margin: 8px 0 14px 0;
+      transform: rotate(-3deg);
+    }
+
+    .invite-message {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-style: italic;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 10px auto;
+    }
+
+    /* Date Hero Banner */
+    .date-banner {
+      background: linear-gradient(135deg, rgba(254, 249, 231, 0.95), rgba(255, 243, 204, 0.7));
+      border-top: 1px solid var(--border-gold);
+      border-bottom: 1px solid var(--border-gold);
+      padding: 18px 10px;
+      margin: 25px 0;
+      text-align: center;
+    }
+
+    .day-text {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      letter-spacing: 5px;
+      color: var(--gold-dark);
+      font-weight: 700;
+    }
+
+    .day-number {
+      font-family: 'Cinzel', serif;
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--gold-dark);
+      line-height: 1;
+      margin: 4px 0;
+    }
+
+    .month-year {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      letter-spacing: 4px;
+      color: var(--text-dark);
+      font-weight: 600;
+    }
+
+    /* Countdown Timer */
+    .countdown-container {
+      margin: 25px 0;
+      text-align: center;
+    }
+    .countdown-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      letter-spacing: 3px;
+      color: var(--gold-dark);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+    .countdown-box {
+      background: #ffffff;
+      border: 1px solid var(--border-gold);
       border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      padding: 10px 14px;
+      min-width: 65px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
     }
-    button {
-      margin-top: 12px;
-      padding: 10px 16px;
+    .countdown-box .num {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gold-dark);
+      display: block;
+      line-height: 1.1;
+    }
+    .countdown-box .label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+
+    /* Event Cards Grid */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .event-card {
+      background: #ffffff;
+      border: 1px solid rgba(203, 161, 53, 0.35);
+      border-radius: 16px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.03);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .event-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(201, 147, 32, 0.15);
+    }
+
+    .event-icon {
+      font-size: 2.2rem;
+      color: var(--gold-primary);
+      margin-bottom: 10px;
+    }
+
+    .event-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      letter-spacing: 3px;
+      color: var(--gold-dark);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .event-time {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+
+    .event-place {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-style: italic;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+
+    .event-address {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .gold-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #d4af37, #aa7c11);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
       border: none;
-      border-radius: 8px;
       cursor: pointer;
+      box-shadow: 0 4px 12px rgba(170, 124, 17, 0.3);
+      transition: all 0.3s ease;
+    }
+    .gold-btn:hover {
+      background: linear-gradient(135deg, #e6c34e, #c4911d);
+      box-shadow: 0 6px 18px rgba(170, 124, 17, 0.45);
+      transform: translateY(-2px);
+      color: #fff;
+    }
+
+    /* RSVP Section */
+    .rsvp-box {
+      text-align: center;
+      padding: 24px;
+      background: linear-gradient(135deg, #fffcf5, #fef7e7);
+      border: 1px dashed var(--gold-primary);
+      border-radius: 16px;
+      margin: 25px 0 10px 0;
+    }
+    .rsvp-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      letter-spacing: 4px;
+      color: var(--gold-dark);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .rsvp-phone {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 14px;
+    }
+    .rsvp-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .whatsapp-btn {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+    }
+    .whatsapp-btn:hover {
+      background: linear-gradient(135deg, #34e777, #15a392);
+    }
+
+    /* =========================================
+       PHOTO UPLOAD & GUESTBOOK SECTION
+       ========================================= */
+    .photo-section {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 35px 24px;
+      border: 2px solid var(--border-gold);
+      box-shadow: var(--shadow-gold), 0 20px 40px rgba(0,0,0,0.06);
+      margin-bottom: 40px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .section-header h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: var(--gold-dark);
+      margin-bottom: 6px;
+    }
+    .section-header p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    /* Upload Form */
+    .upload-form-card {
+      background: #fdfaf3;
+      border: 1px solid rgba(203, 161, 53, 0.35);
+      border-radius: 18px;
+      padding: 24px;
+      max-width: 600px;
+      margin: 0 auto 35px auto;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--gold-dark);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .form-group input[type="text"],
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #e0d2b7;
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      background: #ffffff;
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .form-group input[type="text"]:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 0 3px rgba(203, 161, 53, 0.2);
+    }
+
+    /* Custom File Input Dropzone */
+    .file-dropzone {
+      border: 2px dashed var(--gold-primary);
+      background: #fffdf9;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .file-dropzone:hover {
+      background: #fcf6e6;
+      border-color: var(--gold-dark);
+    }
+    .file-dropzone input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .file-dropzone-icon {
+      font-size: 2.2rem;
+      color: var(--gold-primary);
+      margin-bottom: 8px;
+    }
+    .file-dropzone-text {
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+    .file-dropzone-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .preview-container {
+      display: none;
+      margin-top: 15px;
+      text-align: center;
+      position: relative;
+    }
+    .preview-img {
+      max-height: 220px;
+      max-width: 100%;
+      border-radius: 10px;
+      border: 2px solid var(--gold-primary);
+      object-fit: cover;
+    }
+    .remove-img-btn {
+      position: absolute;
+      top: 5px;
+      right: calc(50% - 100px);
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .submit-upload-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+
+    /* Photo Gallery Grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .photo-card {
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid rgba(203, 161, 53, 0.3);
+      padding: 10px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .photo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 22px rgba(201, 147, 32, 0.18);
+    }
+    .photo-card-img-wrapper {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #f4efe4;
+      cursor: pointer;
+    }
+    .photo-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .photo-card:hover .photo-card-img {
+      transform: scale(1.05);
+    }
+
+    .photo-card-info {
+      padding: 10px 4px 4px 4px;
+      text-align: left;
+    }
+    .photo-guest-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--gold-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .photo-guest-msg {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--text-dark);
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+    .photo-time {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      display: block;
+    }
+
+    .empty-gallery {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+    .empty-gallery i {
+      font-size: 3rem;
+      color: var(--border-gold);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    /* Fullscreen Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 12, 5, 0.92);
+      backdrop-filter: blur(5px);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 75vh;
+      border-radius: 12px;
+      border: 3px solid var(--gold-primary);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    .lightbox-caption {
+      color: #fff;
+      text-align: center;
+      margin-top: 15px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    footer span {
+      font-family: 'Pinyon Script', cursive;
+      font-size: 1.8rem;
+      color: var(--gold-dark);
+      display: block;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 600px) {
+      .main-card { padding: 30px 16px; }
+      .celebrant-name { font-size: 4.2rem; }
+      .roman-xv { font-size: 2.8rem; }
+      .day-number { font-size: 3rem; }
+      .countdown-box { min-width: 55px; padding: 8px 10px; }
+      .countdown-box .num { font-size: 1.3rem; }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Hello, world!</h1>
-    <p>This is my first web page.</p>
-    <button onclick="sayHi()">Click me</button>
+
+  <div class="container">
+    
+    <!-- MAIN INVITATION CARD -->
+    <div class="main-card">
+      
+      <!-- Decorative Corner Accents -->
+      <svg class="corner-decor corner-tl" viewBox="0 0 100 100" fill="none">
+        <path d="M5 95 V25 C5 14 14 5 25 5 H95" stroke="#cba135" stroke-width="2"/>
+        <path d="M12 95 V30 C12 20 20 12 30 12 H95" stroke="#d4af37" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="25" cy="25" r="4" fill="#cba135"/>
+      </svg>
+      <svg class="corner-decor corner-tr" viewBox="0 0 100 100" fill="none">
+        <path d="M5 95 V25 C5 14 14 5 25 5 H95" stroke="#cba135" stroke-width="2"/>
+        <path d="M12 95 V30 C12 20 20 12 30 12 H95" stroke="#d4af37" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="25" cy="25" r="4" fill="#cba135"/>
+      </svg>
+      <svg class="corner-decor corner-bl" viewBox="0 0 100 100" fill="none">
+        <path d="M5 95 V25 C5 14 14 5 25 5 H95" stroke="#cba135" stroke-width="2"/>
+        <path d="M12 95 V30 C12 20 20 12 30 12 H95" stroke="#d4af37" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="25" cy="25" r="4" fill="#cba135"/>
+      </svg>
+      <svg class="corner-decor corner-br" viewBox="0 0 100 100" fill="none">
+        <path d="M5 95 V25 C5 14 14 5 25 5 H95" stroke="#cba135" stroke-width="2"/>
+        <path d="M12 95 V30 C12 20 20 12 30 12 H95" stroke="#d4af37" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="25" cy="25" r="4" fill="#cba135"/>
+      </svg>
+
+      <!-- Sunflower Accents -->
+      <div class="sunflower-corner-top">🌻</div>
+      <div class="sunflower-corner-bottom">🌻</div>
+
+      <!-- HEADER & CROWN -->
+      <div class="header-section">
+        <div class="tiara-icon">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+        <div class="sub-title-top">Mis</div>
+        <div class="roman-xv">XV</div>
+        <div class="sub-title-bottom">Años</div>
+        
+        <div class="heart-divider">
+          <i class="fa-solid fa-heart"></i>
+        </div>
+
+        <div class="celebrant-name">Isa</div>
+
+        <p class="invite-message">
+          "Acompáñame a celebrar este día tan especial."
+        </p>
+
+        <div class="heart-divider">
+          <i class="fa-solid fa-heart"></i>
+        </div>
+      </div>
+
+      <!-- DATE SECTION -->
+      <div class="date-banner">
+        <div class="day-text">SÁBADO</div>
+        <div class="day-number">26</div>
+        <div class="month-year">SEPTIEMBRE 2026</div>
+      </div>
+
+      <!-- COUNTDOWN TIMER -->
+      <div class="countdown-container">
+        <div class="countdown-title"><i class="fa-regular fa-clock"></i> Faltan para el gran día</div>
+        <div class="countdown-grid">
+          <div class="countdown-box">
+            <span class="num" id="cd-days">00</span>
+            <span class="label">Días</span>
+          </div>
+          <div class="countdown-box">
+            <span class="num" id="cd-hours">00</span>
+            <span class="label">Horas</span>
+          </div>
+          <div class="countdown-box">
+            <span class="num" id="cd-minutes">00</span>
+            <span class="label">Min</span>
+          </div>
+          <div class="countdown-box">
+            <span class="num" id="cd-seconds">00</span>
+            <span class="label">Seg</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="heart-divider">
+        <i class="fa-solid fa-heart"></i>
+      </div>
+
+      <!-- EVENTS DETAILS (Misa & Recepción) -->
+      <div class="events-grid">
+        
+        <!-- Misa Card -->
+        <div class="event-card">
+          <div class="event-icon">
+            <i class="fa-solid fa-church"></i>
+          </div>
+          <div class="event-title">MISA</div>
+          <div class="event-time">11:00 AM</div>
+          <div class="event-place">Sacred Hearts</div>
+          <div class="event-address">
+            221 Columbus St<br>
+            Sun Prairie, WI 53590
+          </div>
+          <a href="https://maps.google.com/?q=Sacred+Hearts+221+Columbus+St+Sun+Prairie+WI+53590" target="_blank" class="gold-btn">
+            <i class="fa-solid fa-location-dot"></i> Ver Mapa
+          </a>
+        </div>
+
+        <!-- Recepción Card -->
+        <div class="event-card">
+          <div class="event-icon">
+            <i class="fa-solid fa-champagne-glasses"></i>
+          </div>
+          <div class="event-title">RECEPCIÓN</div>
+          <div class="event-time">4:00 PM</div>
+          <div class="event-place">Gran Celebración</div>
+          <div class="event-address">
+            Música, cena, baile y brindis<br>
+            ¡Te esperamos con alegría!
+          </div>
+          <a href="https://maps.google.com/?q=Sun+Prairie+WI" target="_blank" class="gold-btn">
+            <i class="fa-solid fa-location-dot"></i> Ubicación
+          </a>
+        </div>
+
+      </div>
+
+      <!-- RSVP SECTION -->
+      <div class="rsvp-box">
+        <div class="rsvp-title">CONFIRMA TU ASISTENCIA</div>
+        <div class="rsvp-phone">RSVP: (608) 807-6011</div>
+        <div class="rsvp-buttons">
+          <a href="tel:6088076011" class="gold-btn">
+            <i class="fa-solid fa-phone"></i> Llamar
+          </a>
+          <a href="https://wa.me/16088076011?text=Hola%20confirmo%20mi%20asistencia%20a%20los%20XV%20de%20Isa!" target="_blank" class="gold-btn whatsapp-btn">
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+          </a>
+        </div>
+      </div>
+
+    </div><!-- /main-card -->
+
+
+    <!-- =========================================
+         GUEST PHOTO UPLOAD & ALBUM SECTION
+         ========================================= -->
+    <div class="photo-section" id="galeria">
+      <div class="section-header">
+        <h2>Álbum de Recuerdos 📸</h2>
+        <p>Sube tus fotos de la fiesta y déjale un lindo mensaje a Isa</p>
+      </div>
+
+      <!-- Upload Form -->
+      <div class="upload-form-card">
+        <form id="photoUploadForm">
+          
+          <div class="form-group">
+            <label for="guestName"><i class="fa-solid fa-user"></i> Tu Nombre / Familia:</label>
+            <input type="text" id="guestName" placeholder="Ej: Familia Morales / Tía Rosa" required />
+          </div>
+
+          <div class="form-group">
+            <label for="guestMessage"><i class="fa-solid fa-comment-heart"></i> Mensaje para Isa (Opcional):</label>
+            <textarea id="guestMessage" rows="2" placeholder="¡Felicidades Isa! Te deseamos lo mejor..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-image"></i> Selecciona o Toma una Foto:</label>
+            <div class="file-dropzone" id="dropzone">
+              <input type="file" id="photoFile" accept="image/*" required />
+              <div class="file-dropzone-icon">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+              </div>
+              <div class="file-dropzone-text" id="dropzoneText">
+                Toca aquí para elegir foto o tomar foto con la cámara
+              </div>
+              <div class="file-dropzone-sub">Formatos: JPG, PNG, HEIC</div>
+            </div>
+
+            <div class="preview-container" id="previewContainer">
+              <img src="" alt="Previsualización" class="preview-img" id="previewImg" />
+              <button type="button" class="remove-img-btn" id="removeImgBtn" title="Quitar foto">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="gold-btn submit-upload-btn">
+            <i class="fa-solid fa-paper-plane"></i> Publicar en el Álbum
+          </button>
+        </form>
+      </div>
+
+      <!-- Photos Gallery Grid -->
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Photos will be dynamically rendered here -->
+      </div>
+
+    </div><!-- /photo-section -->
+
+    <!-- FOOTER -->
+    <footer>
+      Hecho con mucho amor para
+      <span>Isa</span>
+      Mis XV Años • 2026
+    </footer>
+
+  </div><!-- /container -->
+
+  <!-- Fullscreen Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightboxClose">&times;</span>
+    <img src="" alt="Foto en grande" class="lightbox-img" id="lightboxImg" />
+    <div class="lightbox-caption" id="lightboxCaption"></div>
   </div>
 
+  <!-- JAVASCRIPT -->
   <script>
-    function sayHi() {
-      alert("Nice! Your JavaScript works.");
+    // 1. COUNTDOWN TIMER TO SEPT 26, 2026 11:00 AM
+    const targetDate = new Date("September 26, 2026 11:00:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        document.getElementById("cd-days").textContent = String(days).padStart(2, '0');
+        document.getElementById("cd-hours").textContent = String(hours).padStart(2, '0');
+        document.getElementById("cd-minutes").textContent = String(minutes).padStart(2, '0');
+        document.getElementById("cd-seconds").textContent = String(seconds).padStart(2, '0');
+      } else {
+        document.getElementById("cd-days").textContent = "00";
+        document.getElementById("cd-hours").textContent = "00";
+        document.getElementById("cd-minutes").textContent = "00";
+        document.getElementById("cd-seconds").textContent = "00";
+      }
     }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 2. PHOTO UPLOAD & GUESTBOOK STORAGE
+    const photoFile = document.getElementById("photoFile");
+    const previewContainer = document.getElementById("previewContainer");
+    const previewImg = document.getElementById("previewImg");
+    const removeImgBtn = document.getElementById("removeImgBtn");
+    const dropzoneText = document.getElementById("dropzoneText");
+    const photoUploadForm = document.getElementById("photoUploadForm");
+    const galleryGrid = document.getElementById("galleryGrid");
+
+    let currentPhotoBase64 = "";
+
+    // Handle File Selection
+    photoFile.addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const img = new Image();
+          img.onload = function() {
+            // Resize image to max 1000px dimension for performance & localStorage
+            const canvas = document.createElement("canvas");
+            const maxDimension = 1000;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > maxDimension) {
+                height = Math.round((height * maxDimension) / width);
+                width = maxDimension;
+              }
+            } else {
+              if (height > maxDimension) {
+                width = Math.round((width * maxDimension) / height);
+                height = maxDimension;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            currentPhotoBase64 = canvas.toDataURL("image/jpeg", 0.82);
+            previewImg.src = currentPhotoBase64;
+            previewContainer.style.display = "block";
+            dropzoneText.textContent = file.name;
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Remove Selected Photo
+    removeImgBtn.addEventListener("click", function() {
+      photoFile.value = "";
+      currentPhotoBase64 = "";
+      previewContainer.style.display = "none";
+      dropzoneText.textContent = "Toca aquí para elegir foto o tomar foto con la cámara";
+    });
+
+    // Load Saved Photos from localStorage
+    function getStoredPhotos() {
+      const stored = localStorage.getItem("isa_xv_photos");
+      return stored ? JSON.parse(stored) : [];
+    }
+
+    function savePhotosToStorage(photos) {
+      try {
+        localStorage.setItem("isa_xv_photos", JSON.stringify(photos));
+      } catch (err) {
+        alert("El almacenamiento local está lleno. Intenta con una imagen más liviana.");
+      }
+    }
+
+    // Render Gallery
+    function renderGallery() {
+      const photos = getStoredPhotos();
+      galleryGrid.innerHTML = "";
+
+      if (photos.length === 0) {
+        galleryGrid.innerHTML = `
+          <div class="empty-gallery">
+            <i class="fa-solid fa-camera-retro"></i>
+            <p>Aún no hay fotos en el álbum.</p>
+            <p style="font-size: 0.9rem; margin-top: 5px;">¡Sé el primero en subir un lindo recuerdo!</p>
+          </div>
+        `;
+        return;
+      }
+
+      photos.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = "photo-card";
+        card.innerHTML = `
+          <div class="photo-card-img-wrapper" onclick="openLightbox(${index})">
+            <img src="${item.image}" alt="Foto de ${item.name}" class="photo-card-img" />
+          </div>
+          <div class="photo-card-info">
+            <div class="photo-guest-name">
+              <i class="fa-solid fa-user-tag" style="font-size:0.8rem; color:#cba135;"></i>
+              ${escapeHtml(item.name)}
+            </div>
+            ${item.message ? `<div class="photo-guest-msg">"${escapeHtml(item.message)}"</div>` : ""}
+            <span class="photo-time"><i class="fa-regular fa-clock"></i> ${item.date}</span>
+          </div>
+        `;
+        galleryGrid.appendChild(card);
+      });
+    }
+
+    // Handle Form Submit
+    photoUploadForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      if (!currentPhotoBase64) {
+        alert("Por favor selecciona una foto para subir.");
+        return;
+      }
+
+      const guestName = document.getElementById("guestName").value.trim();
+      const guestMessage = document.getElementById("guestMessage").value.trim();
+
+      const newPhoto = {
+        name: guestName,
+        message: guestMessage,
+        image: currentPhotoBase64,
+        date: new Date().toLocaleDateString('es-ES', { 
+          day: 'numeric', 
+          month: 'short', 
+          year: 'numeric',
+          hour: '2-digit', 
+          minute: '2-digit' 
+        })
+      };
+
+      const photos = getStoredPhotos();
+      photos.unshift(newPhoto);
+      savePhotosToStorage(photos);
+
+      // Reset Form
+      photoUploadForm.reset();
+      currentPhotoBase64 = "";
+      previewContainer.style.display = "none";
+      dropzoneText.textContent = "Toca aquí para elegir foto o tomar foto con la cámara";
+
+      // Refresh Gallery and Scroll to it
+      renderGallery();
+      document.getElementById("galeria").scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // 3. LIGHTBOX VIEWER
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxCaption = document.getElementById("lightboxCaption");
+    const lightboxClose = document.getElementById("lightboxClose");
+
+    window.openLightbox = function(index) {
+      const photos = getStoredPhotos();
+      const photo = photos[index];
+      if (photo) {
+        lightboxImg.src = photo.image;
+        lightboxCaption.innerHTML = `<strong>${escapeHtml(photo.name)}</strong>${photo.message ? `<br><em>"${escapeHtml(photo.message)}"</em>` : ""}`;
+        lightbox.style.display = "flex";
+      }
+    };
+
+    lightboxClose.addEventListener("click", function() {
+      lightbox.style.display = "none";
+    });
+
+    lightbox.addEventListener("click", function(e) {
+      if (e.target === lightbox) {
+        lightbox.style.display = "none";
+      }
+    });
+
+    function escapeHtml(text) {
+      if (!text) return "";
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Initial render
+    renderGallery();
   </script>
+
 </body>
 </html>
