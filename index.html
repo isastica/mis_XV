@@ -468,44 +468,80 @@
       box-shadow: 0 0 0 3px rgba(203, 161, 53, 0.2);
     }
 
-    /* Custom File Input Dropzone */
+    /* Upload Buttons & Dropzone */
+    .photo-choice-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+    .btn-picker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 10px;
+      border: 2px solid var(--gold-primary);
+      background: #ffffff;
+      color: var(--gold-dark);
+      border-radius: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+    .btn-picker:hover, .btn-picker:active {
+      background: #fcf4dd;
+      border-color: var(--gold-dark);
+      transform: translateY(-2px);
+    }
+    .btn-picker i {
+      font-size: 1.2rem;
+      color: var(--gold-primary);
+    }
+
     .file-dropzone {
       border: 2px dashed var(--gold-primary);
       background: #fffdf9;
       border-radius: 12px;
-      padding: 20px;
+      padding: 18px 12px;
       text-align: center;
       cursor: pointer;
       transition: all 0.3s ease;
-      position: relative;
     }
     .file-dropzone:hover {
       background: #fcf6e6;
       border-color: var(--gold-dark);
     }
-    .file-dropzone input[type="file"] {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      cursor: pointer;
-    }
     .file-dropzone-icon {
-      font-size: 2.2rem;
+      font-size: 1.8rem;
       color: var(--gold-primary);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .file-dropzone-text {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--text-dark);
       font-weight: 500;
     }
     .file-dropzone-sub {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
-      margin-top: 4px;
+      margin-top: 3px;
+    }
+
+    .upload-processing {
+      display: none;
+      padding: 12px;
+      background: #fef8eb;
+      border: 1px solid var(--border-gold);
+      border-radius: 10px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 12px;
     }
 
     .preview-container {
@@ -515,27 +551,29 @@
       position: relative;
     }
     .preview-img {
-      max-height: 220px;
+      max-height: 240px;
       max-width: 100%;
-      border-radius: 10px;
+      border-radius: 12px;
       border: 2px solid var(--gold-primary);
       object-fit: cover;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     .remove-img-btn {
       position: absolute;
-      top: 5px;
-      right: calc(50% - 100px);
+      top: 8px;
+      right: calc(50% - 110px);
       background: #ff4d4d;
       color: white;
       border: none;
       border-radius: 50%;
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
     }
 
     .submit-upload-btn {
@@ -878,18 +916,39 @@
           </div>
 
           <div class="form-group">
-            <label><i class="fa-solid fa-image"></i> Selecciona o Toma una Foto:</label>
-            <div class="file-dropzone" id="dropzone">
-              <input type="file" id="photoFile" accept="image/*" required />
+            <label><i class="fa-solid fa-image"></i> Elige cómo subir tu foto:</label>
+            
+            <!-- Direct Mobile Action Buttons -->
+            <div class="photo-choice-buttons">
+              <button type="button" class="btn-picker" id="btnCamera">
+                <i class="fa-solid fa-camera"></i> Tomar Foto
+              </button>
+              <button type="button" class="btn-picker" id="btnGallery">
+                <i class="fa-solid fa-images"></i> Galería / Archivo
+              </button>
+            </div>
+
+            <!-- Hidden Inputs (No 'required' to avoid invisible browser validation blocks) -->
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;" />
+            <input type="file" id="galleryInput" accept="image/*" style="display:none;" />
+
+            <!-- Drag & Drop Zone -->
+            <div class="file-dropzone" id="dropzoneArea">
               <div class="file-dropzone-icon">
                 <i class="fa-solid fa-cloud-arrow-up"></i>
               </div>
               <div class="file-dropzone-text" id="dropzoneText">
-                Toca aquí para elegir foto o tomar foto con la cámara
+                O arrastra tu foto aquí
               </div>
-              <div class="file-dropzone-sub">Formatos: JPG, PNG, HEIC</div>
+              <div class="file-dropzone-sub">Compatible con teléfonos y computadoras (JPG, PNG, HEIC)</div>
             </div>
 
+            <!-- Processing Status -->
+            <div class="upload-processing" id="uploadProcessing">
+              <i class="fa-solid fa-spinner fa-spin"></i> Procesando y preparando tu foto...
+            </div>
+
+            <!-- Preview Container -->
             <div class="preview-container" id="previewContainer">
               <img src="" alt="Previsualización" class="preview-img" id="previewImg" />
               <button type="button" class="remove-img-btn" id="removeImgBtn" title="Quitar foto">
@@ -898,7 +957,7 @@
             </div>
           </div>
 
-          <button type="submit" class="gold-btn submit-upload-btn">
+          <button type="submit" class="gold-btn submit-upload-btn" id="submitBtn">
             <i class="fa-solid fa-paper-plane"></i> Publicar en el Álbum
           </button>
         </form>
@@ -987,29 +1046,74 @@
     const db = getFirestore(app);
     const photosCollection = collection(db, "guest_photos");
 
-    const photoFile = document.getElementById("photoFile");
+    const btnCamera = document.getElementById("btnCamera");
+    const btnGallery = document.getElementById("btnGallery");
+    const cameraInput = document.getElementById("cameraInput");
+    const galleryInput = document.getElementById("galleryInput");
+    const dropzoneArea = document.getElementById("dropzoneArea");
+    const dropzoneText = document.getElementById("dropzoneText");
+    const uploadProcessing = document.getElementById("uploadProcessing");
     const previewContainer = document.getElementById("previewContainer");
     const previewImg = document.getElementById("previewImg");
     const removeImgBtn = document.getElementById("removeImgBtn");
-    const dropzoneText = document.getElementById("dropzoneText");
     const photoUploadForm = document.getElementById("photoUploadForm");
+    const submitBtn = document.getElementById("submitBtn");
     const galleryGrid = document.getElementById("galleryGrid");
-    const submitBtn = photoUploadForm.querySelector('button[type="submit"]');
 
     let currentPhotoBase64 = "";
     let livePhotos = [];
 
-    // Handle File Selection & Client-Side Compression
-    photoFile.addEventListener("change", function(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          const img = new Image();
-          img.onload = function() {
-            // Resize image to max 900px to ensure fast cloud syncing
+    // Trigger Camera & Gallery Pickers
+    btnCamera.addEventListener("click", () => cameraInput.click());
+    btnGallery.addEventListener("click", () => galleryInput.click());
+    dropzoneArea.addEventListener("click", () => galleryInput.click());
+
+    // Drag and Drop support
+    dropzoneArea.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropzoneArea.style.borderColor = "#8c6818";
+      dropzoneArea.style.background = "#fcf4dd";
+    });
+    dropzoneArea.addEventListener("dragleave", () => {
+      dropzoneArea.style.borderColor = "#cba135";
+      dropzoneArea.style.background = "#fffdf9";
+    });
+    dropzoneArea.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropzoneArea.style.borderColor = "#cba135";
+      dropzoneArea.style.background = "#fffdf9";
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        processFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    cameraInput.addEventListener("change", (e) => {
+      if (e.target.files && e.target.files[0]) processFile(e.target.files[0]);
+    });
+
+    galleryInput.addEventListener("change", (e) => {
+      if (e.target.files && e.target.files[0]) processFile(e.target.files[0]);
+    });
+
+    // Process & Compress Image File
+    function processFile(file) {
+      if (!file.type.startsWith("image/")) {
+        alert("Por favor selecciona un archivo de imagen válido.");
+        return;
+      }
+
+      uploadProcessing.style.display = "block";
+      previewContainer.style.display = "none";
+      dropzoneText.textContent = "Cargando: " + file.name;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          try {
+            // Compress and scale to max 850px for fast mobile upload & Firestore storage
             const canvas = document.createElement("canvas");
-            const maxDimension = 900;
+            const maxDimension = 850;
             let width = img.width;
             let height = img.height;
 
@@ -1030,23 +1134,44 @@
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0, width, height);
 
-            currentPhotoBase64 = canvas.toDataURL("image/jpeg", 0.78);
+            currentPhotoBase64 = canvas.toDataURL("image/jpeg", 0.72);
             previewImg.src = currentPhotoBase64;
+            uploadProcessing.style.display = "none";
             previewContainer.style.display = "block";
-            dropzoneText.textContent = file.name;
-          };
-          img.src = event.target.result;
+            dropzoneText.textContent = "Foto seleccionada: " + file.name;
+          } catch (err) {
+            console.error("Canvas compression error:", err);
+            // Fallback directly to raw data url if canvas fails
+            currentPhotoBase64 = event.target.result;
+            previewImg.src = currentPhotoBase64;
+            uploadProcessing.style.display = "none";
+            previewContainer.style.display = "block";
+          }
         };
-        reader.readAsDataURL(file);
-      }
-    });
+
+        img.onerror = function() {
+          uploadProcessing.style.display = "none";
+          alert("No se pudo leer la imagen. Intenta con otra foto.");
+        };
+
+        img.src = event.target.result;
+      };
+
+      reader.onerror = function() {
+        uploadProcessing.style.display = "none";
+        alert("Error al leer el archivo desde el dispositivo.");
+      };
+
+      reader.readAsDataURL(file);
+    }
 
     // Remove Selected Photo
     removeImgBtn.addEventListener("click", function() {
-      photoFile.value = "";
+      cameraInput.value = "";
+      galleryInput.value = "";
       currentPhotoBase64 = "";
       previewContainer.style.display = "none";
-      dropzoneText.textContent = "Toca aquí para elegir foto o tomar foto con la cámara";
+      dropzoneText.textContent = "O arrastra tu foto aquí";
     });
 
     // Real-Time Cloud Listener (Updates live for everyone across all devices!)
@@ -1140,15 +1265,78 @@
       e.preventDefault();
 
       if (!currentPhotoBase64) {
-        alert("Por favor selecciona una foto para subir.");
+        alert("Por favor toma o selecciona una foto primero.");
         return;
       }
 
       const guestName = document.getElementById("guestName").value.trim();
       const guestMessage = document.getElementById("guestMessage").value.trim();
 
-      // Disable button and show uploading status
+      if (!guestName) {
+        alert("Por favor escribe tu nombre.");
+        return;
+      }
+
       submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo al álbum...';
+
+      try {
+        await addDoc(photosCollection, {
+          name: guestName,
+          message: guestMessage,
+          image: currentPhotoBase64,
+          createdAt: serverTimestamp()
+        });
+
+        // Reset Form
+        photoUploadForm.reset();
+        cameraInput.value = "";
+        galleryInput.value = "";
+        currentPhotoBase64 = "";
+        previewContainer.style.display = "none";
+        dropzoneText.textContent = "O arrastra tu foto aquí";
+
+        document.getElementById("galeria").scrollIntoView({ behavior: 'smooth' });
+      } catch (err) {
+        console.error("Firebase upload error:", err);
+        if (err.code === "permission-denied") {
+          alert("Permiso denegado en Firebase. Revisa que las Reglas de Firestore permitan lectura y escritura (allow read, write: if true;).");
+        } else {
+          alert("Error al subir la foto a Firebase: " + err.message);
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publicar en el Álbum';
+      }
+    });
+
+    // Lightbox Functionality
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxCaption = document.getElementById("lightboxCaption");
+    const lightboxClose = document.getElementById("lightboxClose");
+
+    function openLightbox(photo) {
+      lightboxImg.src = photo.image;
+      lightboxCaption.innerHTML = `<strong>${escapeHtml(photo.name)}</strong>${photo.message ? `<br><em>"${escapeHtml(photo.message)}"</em>` : ""}`;
+      lightbox.style.display = "flex";
+    }
+
+    lightboxClose.addEventListener("click", () => lightbox.style.display = "none");
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) lightbox.style.display = "none";
+    });
+
+    function escapeHtml(text) {
+      if (!text) return "";
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
       submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo a la nube...';
 
       try {
