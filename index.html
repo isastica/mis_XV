@@ -1337,64 +1337,6 @@
         .replace(/'/g, "&#039;");
     }
   </script>
-      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo a la nube...';
-
-      try {
-        await addDoc(photosCollection, {
-          name: guestName,
-          message: guestMessage,
-          image: currentPhotoBase64,
-          createdAt: serverTimestamp()
-        });
-
-        // Reset Form
-        photoUploadForm.reset();
-        currentPhotoBase64 = "";
-        previewContainer.style.display = "none";
-        dropzoneText.textContent = "Toca aquí para elegir foto o tomar foto con la cámara";
-
-        document.getElementById("galeria").scrollIntoView({ behavior: 'smooth' });
-      } catch (err) {
-        console.error(err);
-        alert("Error al subir la foto a Firebase: " + err.message);
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publicar en el Álbum';
-      }
-    });
-
-    // Lightbox Functionality
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightboxImg");
-    const lightboxCaption = document.getElementById("lightboxCaption");
-    const lightboxClose = document.getElementById("lightboxClose");
-
-    function openLightbox(photo) {
-      lightboxImg.src = photo.image;
-      lightboxCaption.innerHTML = `<strong>${escapeHtml(photo.name)}</strong>${photo.message ? `<br><em>"${escapeHtml(photo.message)}"</em>` : ""}`;
-      lightbox.style.display = "flex";
-    }
-
-    lightboxClose.addEventListener("click", () => lightbox.style.display = "none");
-    lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox) lightbox.style.display = "none";
-    });
-
-    function escapeHtml(text) {
-      if (!text) return "";
-      return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-        .replace(/'/g, "&#039;");
-    }
-
-    // Initial render
-    renderGallery();
-  </script>
 
 </body>
 </html>
