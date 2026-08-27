@@ -75,6 +75,46 @@
     .corner-bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
     .corner-br { bottom: 10px; right: 10px; transform: scale(-1); }
 
+    /* Language Switcher (Text only, top right) */
+    .lang-switcher {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem;
+      user-select: none;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 500;
+      color: #9e917e;
+      transition: all 0.25s ease;
+      letter-spacing: 0.5px;
+    }
+    .lang-btn:hover {
+      color: #5c4d38;
+    }
+    .lang-btn.active {
+      color: #c99320;
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(201, 147, 32, 0.4);
+      cursor: default;
+    }
+    .lang-sep {
+      color: #d1c2ab;
+      font-size: 0.8rem;
+    }
+
     /* Sunflower Accents */
     .sunflower-corner-top {
       position: absolute;
@@ -758,6 +798,13 @@
     
     <!-- MAIN INVITATION CARD -->
     <div class="main-card">
+
+      <!-- Language Switcher (Letters only, Top Right) -->
+      <div class="lang-switcher">
+        <button type="button" class="lang-btn active" id="langEs">Español</button>
+        <span class="lang-sep">|</span>
+        <button type="button" class="lang-btn" id="langEn">English</button>
+      </div>
       
       <!-- Decorative Corner Accents -->
       <svg class="corner-decor corner-tl" viewBox="0 0 100 100" fill="none">
@@ -790,9 +837,9 @@
         <div class="tiara-icon">
           <i class="fa-solid fa-crown"></i>
         </div>
-        <div class="sub-title-top">Mis</div>
+        <div class="sub-title-top" id="txtSubTitleTop">Mis</div>
         <div class="roman-xv">XV</div>
-        <div class="sub-title-bottom">Años</div>
+        <div class="sub-title-bottom" id="txtSubTitleBottom">Años</div>
         
         <div class="heart-divider">
           <i class="fa-solid fa-heart"></i>
@@ -800,7 +847,7 @@
 
         <div class="celebrant-name">Isa</div>
 
-        <p class="invite-message">
+        <p class="invite-message" id="txtInviteMsg">
           "Acompáñame a celebrar este día tan especial."
         </p>
 
@@ -811,30 +858,30 @@
 
       <!-- DATE SECTION -->
       <div class="date-banner">
-        <div class="day-text">SÁBADO</div>
+        <div class="day-text" id="txtDay">SÁBADO</div>
         <div class="day-number">26</div>
-        <div class="month-year">SEPTIEMBRE 2026</div>
+        <div class="month-year" id="txtMonthYear">SEPTIEMBRE 2026</div>
       </div>
 
       <!-- COUNTDOWN TIMER -->
       <div class="countdown-container">
-        <div class="countdown-title"><i class="fa-regular fa-clock"></i> Faltan para el gran día</div>
+        <div class="countdown-title" id="txtCountdownTitle"><i class="fa-regular fa-clock"></i> <span>Faltan para el gran día</span></div>
         <div class="countdown-grid">
           <div class="countdown-box">
             <span class="num" id="cd-days">00</span>
-            <span class="label">Días</span>
+            <span class="label" id="lblDays">Días</span>
           </div>
           <div class="countdown-box">
             <span class="num" id="cd-hours">00</span>
-            <span class="label">Horas</span>
+            <span class="label" id="lblHours">Horas</span>
           </div>
           <div class="countdown-box">
             <span class="num" id="cd-minutes">00</span>
-            <span class="label">Min</span>
+            <span class="label" id="lblMinutes">Min</span>
           </div>
           <div class="countdown-box">
             <span class="num" id="cd-seconds">00</span>
-            <span class="label">Seg</span>
+            <span class="label" id="lblSeconds">Seg</span>
           </div>
         </div>
       </div>
@@ -851,15 +898,15 @@
           <div class="event-icon">
             <i class="fa-solid fa-church"></i>
           </div>
-          <div class="event-title">MISA</div>
+          <div class="event-title" id="txtMisaTitle">MISA</div>
           <div class="event-time">11:00 AM</div>
           <div class="event-place">Sacred Hearts</div>
           <div class="event-address">
             221 Columbus St<br>
             Sun Prairie, WI 53590
           </div>
-          <a href="https://maps.google.com/?q=Sacred+Hearts+221+Columbus+St+Sun+Prairie+WI+53590" target="_blank" class="gold-btn">
-            <i class="fa-solid fa-location-dot"></i> Ver Mapa
+          <a href="https://maps.google.com/?q=Sacred+Hearts+221+Columbus+St+Sun+Prairie+WI+53590" target="_blank" class="gold-btn" id="btnMisaMap">
+            <i class="fa-solid fa-location-dot"></i> <span>Ver Mapa</span>
           </a>
         </div>
 
@@ -868,15 +915,15 @@
           <div class="event-icon">
             <i class="fa-solid fa-champagne-glasses"></i>
           </div>
-          <div class="event-title">RECEPCIÓN</div>
+          <div class="event-title" id="txtRecepcionTitle">RECEPCIÓN</div>
           <div class="event-time">4:00 PM</div>
-          <div class="event-place">Gran Celebración</div>
-          <div class="event-address">
+          <div class="event-place" id="txtRecepcionPlace">Gran Celebración</div>
+          <div class="event-address" id="txtRecepcionAddress">
             Música, cena, baile y brindis<br>
             ¡Te esperamos con alegría!
           </div>
-          <a href="https://maps.app.goo.gl/isvYXrFiRbvz5xt26?g_st=im" target="_blank" class="gold-btn">
-            <i class="fa-solid fa-location-dot"></i> Ubicación
+          <a href="https://maps.app.goo.gl/isvYXrFiRbvz5xt26?g_st=im" target="_blank" class="gold-btn" id="btnRecepcionLoc">
+            <i class="fa-solid fa-location-dot"></i> <span>Ubicación</span>
           </a>
         </div>
 
@@ -884,13 +931,13 @@
 
       <!-- RSVP SECTION -->
       <div class="rsvp-box">
-        <div class="rsvp-title">CONFIRMA TU ASISTENCIA</div>
+        <div class="rsvp-title" id="txtRsvpTitle">CONFIRMA TU ASISTENCIA</div>
         <div class="rsvp-phone">RSVP: (608) 807-6011</div>
         <div class="rsvp-buttons">
-          <a href="tel:6088076011" class="gold-btn">
-            <i class="fa-solid fa-phone"></i> Llamar
+          <a href="tel:6088076011" class="gold-btn" id="btnRsvpCall">
+            <i class="fa-solid fa-phone"></i> <span>Llamar</span>
           </a>
-          <a href="https://wa.me/16088076011?text=Hola%20confirmo%20mi%20asistencia%20a%20los%20XV%20de%20Isa!" target="_blank" class="gold-btn whatsapp-btn">
+          <a href="https://wa.me/16088076011?text=Hola%20confirmo%20mi%20asistencia%20a%20los%20XV%20de%20Isa!" target="_blank" class="gold-btn whatsapp-btn" id="btnRsvpWhatsapp">
             <i class="fa-brands fa-whatsapp"></i> WhatsApp
           </a>
         </div>
@@ -904,8 +951,8 @@
          ========================================= -->
     <div class="photo-section" id="galeria">
       <div class="section-header">
-        <h2>Álbum de Recuerdos 📸</h2>
-        <p>Sube tus fotos de la fiesta y déjale un lindo mensaje a Isa</p>
+        <h2 id="txtAlbumTitle">Álbum de Recuerdos 📸</h2>
+        <p id="txtAlbumDesc">Sube tus fotos de la fiesta y déjale un lindo mensaje a Isa</p>
       </div>
 
       <!-- Upload Form -->
@@ -913,25 +960,25 @@
         <form id="photoUploadForm">
           
           <div class="form-group">
-            <label for="guestName"><i class="fa-solid fa-user"></i> Tu Nombre / Familia:</label>
+            <label for="guestName" id="lblGuestName"><i class="fa-solid fa-user"></i> <span>Tu Nombre / Familia:</span></label>
             <input type="text" id="guestName" placeholder="Ej: Familia Morales / Tía Rosa" required />
           </div>
 
           <div class="form-group">
-            <label for="guestMessage"><i class="fa-solid fa-comment-heart"></i> Mensaje para Isa (Opcional):</label>
+            <label for="guestMessage" id="lblGuestMsg"><i class="fa-solid fa-comment-heart"></i> <span>Mensaje para Isa (Opcional):</span></label>
             <textarea id="guestMessage" rows="2" placeholder="¡Felicidades Isa! Te deseamos lo mejor..."></textarea>
           </div>
 
           <div class="form-group">
-            <label><i class="fa-solid fa-image"></i> Elige cómo subir tu foto:</label>
+            <label id="lblChoosePhoto"><i class="fa-solid fa-image"></i> <span>Elige cómo subir tu foto:</span></label>
             
             <!-- Direct Mobile Action Buttons -->
             <div class="photo-choice-buttons">
               <button type="button" class="btn-picker" id="btnCamera">
-                <i class="fa-solid fa-camera"></i> Tomar Foto
+                <i class="fa-solid fa-camera"></i> <span>Tomar Foto</span>
               </button>
               <button type="button" class="btn-picker" id="btnGallery">
-                <i class="fa-solid fa-images"></i> Galería / Archivo
+                <i class="fa-solid fa-images"></i> <span>Galería / Archivo</span>
               </button>
             </div>
 
@@ -947,12 +994,12 @@
               <div class="file-dropzone-text" id="dropzoneText">
                 O arrastra tu foto aquí
               </div>
-              <div class="file-dropzone-sub">Compatible con teléfonos y computadoras (JPG, PNG, HEIC)</div>
+              <div class="file-dropzone-sub" id="dropzoneSub">Compatible con teléfonos y computadoras (JPG, PNG, HEIC)</div>
             </div>
 
             <!-- Processing Status -->
             <div class="upload-processing" id="uploadProcessing">
-              <i class="fa-solid fa-spinner fa-spin"></i> Procesando y preparando tu foto...
+              <i class="fa-solid fa-spinner fa-spin"></i> <span>Procesando y preparando tu foto...</span>
             </div>
 
             <!-- Preview Container -->
@@ -965,7 +1012,7 @@
           </div>
 
           <button type="submit" class="gold-btn submit-upload-btn" id="submitBtn">
-            <i class="fa-solid fa-paper-plane"></i> Publicar en el Álbum
+            <i class="fa-solid fa-paper-plane"></i> <span>Publicar en el Álbum</span>
           </button>
         </form>
       </div>
@@ -979,10 +1026,10 @@
 
     <!-- FOOTER -->
     <footer>
-      Hecho con mucho amor para
+      <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
-      Mis XV Años • 2026
-      <div class="version-tag">v1.00.01</div>
+      <div id="txtFooterEvent">Mis XV Años • 2026</div>
+      <div class="version-tag">v1.00.02</div>
     </footer>
 
   </div><!-- /container -->
@@ -1024,7 +1071,7 @@
     updateCountdown();
   </script>
 
-  <!-- FIREBASE SCRIPTS (MODULE) -->
+  <!-- FIREBASE & LANGUAGE SCRIPTS (MODULE) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { 
@@ -1038,6 +1085,116 @@
       doc, 
       serverTimestamp 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // --- LANGUAGE / TRANSLATIONS DICTIONARY ---
+    const i18n = {
+      es: {
+        pageTitle: "Mis XV Años - Isa | 26 de Septiembre 2026",
+        subTitleTop: "Mis",
+        subTitleBottom: "Años",
+        inviteMsg: "\"Acompáñame a celebrar este día tan especial.\"",
+        dayText: "SÁBADO",
+        monthYear: "SEPTIEMBRE 2026",
+        countdownTitle: "Faltan para el gran día",
+        cdDays: "Días",
+        cdHours: "Horas",
+        cdMin: "Min",
+        cdSec: "Seg",
+        misaTitle: "MISA",
+        misaBtn: "Ver Mapa",
+        recepcionTitle: "RECEPCIÓN",
+        recepcionPlace: "Gran Celebración",
+        recepcionAddress: "Música, cena, baile y brindis<br>¡Te esperamos con alegría!",
+        recepcionBtn: "Ubicación",
+        rsvpTitle: "CONFIRMA TU ASISTENCIA",
+        rsvpCall: "Llamar",
+        albumTitle: "Álbum de Recuerdos 📸",
+        albumDesc: "Sube tus fotos de la fiesta y déjale un lindo mensaje a Isa",
+        labelName: "Tu Nombre / Familia:",
+        placeholderName: "Ej: Familia Morales / Tía Rosa",
+        labelMsg: "Mensaje para Isa (Opcional):",
+        placeholderMsg: "¡Felicidades Isa! Te deseamos lo mejor...",
+        labelPhoto: "Elige cómo subir tu foto:",
+        btnCamera: "Tomar Foto",
+        btnGallery: "Galería / Archivo",
+        dropzoneText: "O arrastra tu foto aquí",
+        dropzoneSub: "Compatible con teléfonos y computadoras (JPG, PNG, HEIC)",
+        processing: "Procesando y preparando tu foto...",
+        btnSubmit: "Publicar en el Álbum",
+        btnSubmitting: "Subiendo al álbum...",
+        emptyTitle: "Aún no hay fotos en el álbum común.",
+        emptySub: "¡Sé el primero en subir un lindo recuerdo!",
+        footerLove: "Hecho con mucho amor para",
+        footerEvent: "Mis XV Años • 2026",
+        alertNoPhoto: "Por favor toma o selecciona una foto primero.",
+        alertNoName: "Por favor escribe tu nombre.",
+        alertDelConfirm: "¿Deseas eliminar permanentemente la foto de \"{name}\" del álbum común?",
+        btnDeleteTitle: "Eliminar foto de la nube",
+        recentTime: "Reciente",
+        photoSelected: "Foto seleccionada: ",
+        errorInvalidImg: "Por favor selecciona un archivo de imagen válido.",
+        errorReadImg: "No se pudo leer la imagen. Intenta con otra foto.",
+        errorReadFile: "Error al leer el archivo desde el dispositivo.",
+        errorUpload: "Error al subir la foto a Firebase: ",
+        errorPermission: "Permiso denegado en Firebase. Revisa que las Reglas de Firestore permitan lectura y escritura.",
+        errorCloudLoad: "No se pudieron cargar las fotos en tiempo real.",
+        errorCloudRuleHint: "Asegúrate de haber habilitado Firestore Database en modo de prueba en Firebase."
+      },
+      en: {
+        pageTitle: "My Quinceañera - Isa | September 26, 2026",
+        subTitleTop: "My",
+        subTitleBottom: "15th Birthday",
+        inviteMsg: "\"Join me in celebrating this very special day.\"",
+        dayText: "SATURDAY",
+        monthYear: "SEPTEMBER 2026",
+        countdownTitle: "Countdown to the big day",
+        cdDays: "Days",
+        cdHours: "Hours",
+        cdMin: "Min",
+        cdSec: "Sec",
+        misaTitle: "MASS",
+        misaBtn: "View Map",
+        recepcionTitle: "RECEPTION",
+        recepcionPlace: "Grand Celebration",
+        recepcionAddress: "Music, dinner, dancing and toast<br>We look forward to celebrating with you!",
+        recepcionBtn: "Location",
+        rsvpTitle: "CONFIRM YOUR ATTENDANCE",
+        rsvpCall: "Call",
+        albumTitle: "Memory Album 📸",
+        albumDesc: "Upload your party photos and leave a sweet message for Isa",
+        labelName: "Your Name / Family:",
+        placeholderName: "E.g. Morales Family / Aunt Rosa",
+        labelMsg: "Message for Isa (Optional):",
+        placeholderMsg: "Congratulations Isa! Wishing you the best...",
+        labelPhoto: "Choose how to upload your photo:",
+        btnCamera: "Take Photo",
+        btnGallery: "Gallery / File",
+        dropzoneText: "Or drag & drop your photo here",
+        dropzoneSub: "Compatible with phones and computers (JPG, PNG, HEIC)",
+        processing: "Processing and preparing your photo...",
+        btnSubmit: "Post to Album",
+        btnSubmitting: "Uploading to album...",
+        emptyTitle: "No photos in the shared album yet.",
+        emptySub: "Be the first to upload a sweet memory!",
+        footerLove: "Made with lots of love for",
+        footerEvent: "My Quinceañera • 2026",
+        alertNoPhoto: "Please take or select a photo first.",
+        alertNoName: "Please enter your name.",
+        alertDelConfirm: "Are you sure you want to permanently delete \"{name}\"'s photo from the shared album?",
+        btnDeleteTitle: "Delete photo from cloud",
+        recentTime: "Recent",
+        photoSelected: "Photo selected: ",
+        errorInvalidImg: "Please select a valid image file.",
+        errorReadImg: "Could not read the image. Please try another photo.",
+        errorReadFile: "Error reading the file from device.",
+        errorUpload: "Error uploading photo to Firebase: ",
+        errorPermission: "Permission denied in Firebase. Please check Firestore Rules allow read and write.",
+        errorCloudLoad: "Could not load photos in real time.",
+        errorCloudRuleHint: "Make sure Firestore Database is enabled in test mode in Firebase."
+      }
+    };
+
+    let currentLang = localStorage.getItem("isa_lang") || "es";
 
     // Firebase Configuration
     const firebaseConfig = {
@@ -1054,6 +1211,9 @@
     const db = getFirestore(app);
     const photosCollection = collection(db, "guest_photos");
 
+    // UI Elements
+    const langEsBtn = document.getElementById("langEs");
+    const langEnBtn = document.getElementById("langEn");
     const btnCamera = document.getElementById("btnCamera");
     const btnGallery = document.getElementById("btnGallery");
     const cameraInput = document.getElementById("cameraInput");
@@ -1067,9 +1227,86 @@
     const photoUploadForm = document.getElementById("photoUploadForm");
     const submitBtn = document.getElementById("submitBtn");
     const galleryGrid = document.getElementById("galleryGrid");
+    const guestNameInput = document.getElementById("guestName");
+    const guestMessageInput = document.getElementById("guestMessage");
 
     let currentPhotoBase64 = "";
+    let selectedFileName = "";
     let livePhotos = [];
+
+    // --- APPLY LANGUAGE FUNCTION ---
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem("isa_lang", lang);
+      const t = i18n[lang];
+
+      document.documentElement.lang = lang;
+      document.title = t.pageTitle;
+
+      // Update switcher active states
+      if (lang === "es") {
+        langEsBtn.classList.add("active");
+        langEnBtn.classList.remove("active");
+      } else {
+        langEnBtn.classList.add("active");
+        langEsBtn.classList.remove("active");
+      }
+
+      // Main Card texts
+      document.getElementById("txtSubTitleTop").textContent = t.subTitleTop;
+      document.getElementById("txtSubTitleBottom").textContent = t.subTitleBottom;
+      document.getElementById("txtInviteMsg").textContent = t.inviteMsg;
+      document.getElementById("txtDay").textContent = t.dayText;
+      document.getElementById("txtMonthYear").textContent = t.monthYear;
+      document.querySelector("#txtCountdownTitle span").textContent = t.countdownTitle;
+      document.getElementById("lblDays").textContent = t.cdDays;
+      document.getElementById("lblHours").textContent = t.cdHours;
+      document.getElementById("lblMinutes").textContent = t.cdMin;
+      document.getElementById("lblSeconds").textContent = t.cdSec;
+
+      // Event Cards
+      document.getElementById("txtMisaTitle").textContent = t.misaTitle;
+      document.querySelector("#btnMisaMap span").textContent = t.misaBtn;
+      document.getElementById("txtRecepcionTitle").textContent = t.recepcionTitle;
+      document.getElementById("txtRecepcionPlace").textContent = t.recepcionPlace;
+      document.getElementById("txtRecepcionAddress").innerHTML = t.recepcionAddress;
+      document.querySelector("#btnRecepcionLoc span").textContent = t.recepcionBtn;
+
+      // RSVP
+      document.getElementById("txtRsvpTitle").textContent = t.rsvpTitle;
+      document.querySelector("#btnRsvpCall span").textContent = t.rsvpCall;
+
+      // Album Section
+      document.getElementById("txtAlbumTitle").textContent = t.albumTitle;
+      document.getElementById("txtAlbumDesc").textContent = t.albumDesc;
+      document.querySelector("#lblGuestName span").textContent = t.labelName;
+      guestNameInput.placeholder = t.placeholderName;
+      document.querySelector("#lblGuestMsg span").textContent = t.labelMsg;
+      guestMessageInput.placeholder = t.placeholderMsg;
+      document.querySelector("#lblChoosePhoto span").textContent = t.labelPhoto;
+      document.querySelector("#btnCamera span").textContent = t.btnCamera;
+      document.querySelector("#btnGallery span").textContent = t.btnGallery;
+
+      if (!currentPhotoBase64) {
+        dropzoneText.textContent = t.dropzoneText;
+      } else if (selectedFileName) {
+        dropzoneText.textContent = t.photoSelected + selectedFileName;
+      }
+      document.getElementById("dropzoneSub").textContent = t.dropzoneSub;
+      document.querySelector("#uploadProcessing span").textContent = t.processing;
+      document.querySelector("#submitBtn span").textContent = t.btnSubmit;
+
+      // Footer
+      document.getElementById("txtFooterLove").textContent = t.footerLove;
+      document.getElementById("txtFooterEvent").textContent = t.footerEvent;
+
+      // Re-render gallery cards with current locale timestamps and empty states
+      renderGalleryCards();
+    }
+
+    // Language switch button handlers
+    langEsBtn.addEventListener("click", () => applyLanguage("es"));
+    langEnBtn.addEventListener("click", () => applyLanguage("en"));
 
     // Trigger Camera & Gallery Pickers
     btnCamera.addEventListener("click", () => cameraInput.click());
@@ -1105,21 +1342,22 @@
 
     // Process & Compress Image File
     function processFile(file) {
+      const t = i18n[currentLang];
       if (!file.type.startsWith("image/")) {
-        alert("Por favor selecciona un archivo de imagen válido.");
+        alert(t.errorInvalidImg);
         return;
       }
 
+      selectedFileName = file.name;
       uploadProcessing.style.display = "block";
       previewContainer.style.display = "none";
-      dropzoneText.textContent = "Cargando: " + file.name;
+      dropzoneText.textContent = (currentLang === 'es' ? "Cargando: " : "Loading: ") + file.name;
 
       const reader = new FileReader();
       reader.onload = function(event) {
         const img = new Image();
         img.onload = function() {
           try {
-            // Compress and scale to max 850px for fast mobile upload & Firestore storage
             const canvas = document.createElement("canvas");
             const maxDimension = 850;
             let width = img.width;
@@ -1146,10 +1384,9 @@
             previewImg.src = currentPhotoBase64;
             uploadProcessing.style.display = "none";
             previewContainer.style.display = "block";
-            dropzoneText.textContent = "Foto seleccionada: " + file.name;
+            dropzoneText.textContent = t.photoSelected + file.name;
           } catch (err) {
             console.error("Canvas compression error:", err);
-            // Fallback directly to raw data url if canvas fails
             currentPhotoBase64 = event.target.result;
             previewImg.src = currentPhotoBase64;
             uploadProcessing.style.display = "none";
@@ -1159,7 +1396,7 @@
 
         img.onerror = function() {
           uploadProcessing.style.display = "none";
-          alert("No se pudo leer la imagen. Intenta con otra foto.");
+          alert(t.errorReadImg);
         };
 
         img.src = event.target.result;
@@ -1167,7 +1404,7 @@
 
       reader.onerror = function() {
         uploadProcessing.style.display = "none";
-        alert("Error al leer el archivo desde el dispositivo.");
+        alert(t.errorReadFile);
       };
 
       reader.readAsDataURL(file);
@@ -1178,54 +1415,50 @@
       cameraInput.value = "";
       galleryInput.value = "";
       currentPhotoBase64 = "";
+      selectedFileName = "";
       previewContainer.style.display = "none";
-      dropzoneText.textContent = "O arrastra tu foto aquí";
+      dropzoneText.textContent = i18n[currentLang].dropzoneText;
     });
 
-    // Real-Time Cloud Listener (Updates live for everyone across all devices!)
-    const q = query(photosCollection, orderBy("createdAt", "desc"));
-    onSnapshot(q, (snapshot) => {
-      livePhotos = [];
+    // Render Gallery DOM
+    function renderGalleryCards() {
+      const t = i18n[currentLang];
       galleryGrid.innerHTML = "";
 
-      if (snapshot.empty) {
+      if (livePhotos.length === 0) {
         galleryGrid.innerHTML = `
           <div class="empty-gallery">
             <i class="fa-solid fa-camera-retro"></i>
-            <p>Aún no hay fotos en el álbum común.</p>
-            <p style="font-size: 0.9rem; margin-top: 5px;">¡Sé el primero en subir un lindo recuerdo!</p>
+            <p>${t.emptyTitle}</p>
+            <p style="font-size: 0.9rem; margin-top: 5px;">${t.emptySub}</p>
           </div>
         `;
         return;
       }
 
-      snapshot.forEach((docSnapshot) => {
-        const data = docSnapshot.data();
-        const photoId = docSnapshot.id;
-        livePhotos.push({ id: photoId, ...data });
-
-        const dateStr = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString('es-ES', {
+      livePhotos.forEach((item) => {
+        const dateStr = item.createdAt ? new Date(item.createdAt.toDate ? item.createdAt.toDate() : item.createdAt).toLocaleDateString(currentLang === 'es' ? 'es-ES' : 'en-US', {
           day: 'numeric',
           month: 'short',
           hour: '2-digit',
           minute: '2-digit'
-        }) : "Reciente";
+        }) : t.recentTime;
 
         const card = document.createElement("div");
         card.className = "photo-card";
         card.innerHTML = `
-          <div class="photo-card-img-wrapper" data-id="${photoId}">
-            <img src="${data.image}" alt="Foto de ${escapeHtml(data.name)}" class="photo-card-img" />
+          <div class="photo-card-img-wrapper" data-id="${item.id}">
+            <img src="${item.image}" alt="Foto de ${escapeHtml(item.name)}" class="photo-card-img" />
           </div>
           <div class="photo-card-info">
             <div class="photo-guest-name">
               <i class="fa-solid fa-user-tag" style="font-size:0.8rem; color:#cba135;"></i>
-              ${escapeHtml(data.name)}
+              ${escapeHtml(item.name)}
             </div>
-            ${data.message ? `<div class="photo-guest-msg">"${escapeHtml(data.message)}"</div>` : ""}
+            ${item.message ? `<div class="photo-guest-msg">"${escapeHtml(item.message)}"</div>` : ""}
             <div class="photo-card-footer">
               <span class="photo-time"><i class="fa-regular fa-clock"></i> ${dateStr}</span>
-              <button class="photo-delete-btn" data-delete-id="${photoId}" data-name="${escapeHtml(data.name)}" title="Eliminar foto de la nube">
+              <button class="photo-delete-btn" data-delete-id="${item.id}" data-name="${escapeHtml(item.name)}" title="${t.btnDeleteTitle}">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
             </div>
@@ -1248,22 +1481,34 @@
           e.stopPropagation();
           const id = btn.getAttribute("data-delete-id");
           const name = btn.getAttribute("data-name");
-          if (confirm(`¿Deseas eliminar permanentemente la foto de "${name}" del álbum común?`)) {
+          const confirmMsg = t.alertDelConfirm.replace("{name}", name);
+          if (confirm(confirmMsg)) {
             try {
               await deleteDoc(doc(db, "guest_photos", id));
             } catch (err) {
-              alert("Error al eliminar la foto: " + err.message);
+              alert(err.message);
             }
           }
         });
       });
+    }
+
+    // Real-Time Cloud Listener
+    const q = query(photosCollection, orderBy("createdAt", "desc"));
+    onSnapshot(q, (snapshot) => {
+      livePhotos = [];
+      snapshot.forEach((docSnapshot) => {
+        livePhotos.push({ id: docSnapshot.id, ...docSnapshot.data() });
+      });
+      renderGalleryCards();
     }, (error) => {
       console.error("Error al cargar fotos de Firebase:", error);
+      const t = i18n[currentLang];
       galleryGrid.innerHTML = `
         <div class="empty-gallery">
           <i class="fa-solid fa-triangle-exclamation" style="color: #d93838;"></i>
-          <p>No se pudieron cargar las fotos en tiempo real.</p>
-          <p style="font-size: 0.85rem; color: #a37c2a; margin-top: 4px;">Asegúrate de haber habilitado Firestore Database en modo de prueba en Firebase.</p>
+          <p>${t.errorCloudLoad}</p>
+          <p style="font-size: 0.85rem; color: #a37c2a; margin-top: 4px;">${t.errorCloudRuleHint}</p>
         </div>
       `;
     });
@@ -1271,22 +1516,23 @@
     // Handle Form Submit to Firebase Cloud
     photoUploadForm.addEventListener("submit", async function(e) {
       e.preventDefault();
+      const t = i18n[currentLang];
 
       if (!currentPhotoBase64) {
-        alert("Por favor toma o selecciona una foto primero.");
+        alert(t.alertNoPhoto);
         return;
       }
 
-      const guestName = document.getElementById("guestName").value.trim();
-      const guestMessage = document.getElementById("guestMessage").value.trim();
+      const guestName = guestNameInput.value.trim();
+      const guestMessage = guestMessageInput.value.trim();
 
       if (!guestName) {
-        alert("Por favor escribe tu nombre.");
+        alert(t.alertNoName);
         return;
       }
 
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo al álbum...';
+      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>${t.btnSubmitting}</span>`;
 
       try {
         await addDoc(photosCollection, {
@@ -1301,20 +1547,21 @@
         cameraInput.value = "";
         galleryInput.value = "";
         currentPhotoBase64 = "";
+        selectedFileName = "";
         previewContainer.style.display = "none";
-        dropzoneText.textContent = "O arrastra tu foto aquí";
+        dropzoneText.textContent = t.dropzoneText;
 
         document.getElementById("galeria").scrollIntoView({ behavior: 'smooth' });
       } catch (err) {
         console.error("Firebase upload error:", err);
         if (err.code === "permission-denied") {
-          alert("Permiso denegado en Firebase. Revisa que las Reglas de Firestore permitan lectura y escritura (allow read, write: if true;).");
+          alert(t.errorPermission);
         } else {
-          alert("Error al subir la foto a Firebase: " + err.message);
+          alert(t.errorUpload + err.message);
         }
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publicar en el Álbum';
+        submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>${i18n[currentLang].btnSubmit}</span>`;
       }
     });
 
@@ -1344,6 +1591,9 @@
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
     }
+
+    // Initialize Language on load
+    applyLanguage(currentLang);
   </script>
 
 </body>
