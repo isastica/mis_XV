@@ -509,6 +509,12 @@
       border-color: var(--gold-primary);
       box-shadow: 0 0 0 3px rgba(203, 161, 53, 0.2);
     }
+    .form-group select:invalid {
+      color: #9e917e;
+    }
+    .form-group select option {
+      color: var(--text-dark);
+    }
 
     /* Upload Buttons & Dropzone */
     .photo-choice-buttons {
@@ -963,7 +969,8 @@
 
           <div class="form-group">
             <label for="photoAlbum" id="lblPhotoAlbum"><i class="fa-solid fa-folder-open"></i> <span>Álbum:</span></label>
-            <select id="photoAlbum">
+            <select id="photoAlbum" required>
+              <option value="" disabled selected>Asignar álbum</option>
               <option value="isa">Isa y yo</option>
               <option value="guests">Invitados</option>
               <option value="misa">Misa</option>
@@ -1036,7 +1043,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.04</div>
+      <div class="version-tag">v1.00.05</div>
     </footer>
 
   </div><!-- /container -->
@@ -1119,6 +1126,7 @@
         labelName: "Tu Nombre / Familia:",
         placeholderName: "Ej: Familia Morales / Tía Rosa",
         labelAlbum: "Álbum:",
+        albumPlaceholder: "Asignar álbum",
         albumOptions: {
           isa: "Isa y yo",
           guests: "Invitados",
@@ -1177,6 +1185,7 @@
         labelName: "Your Name / Family:",
         placeholderName: "E.g. Morales Family / Aunt Rosa",
         labelAlbum: "Album:",
+        albumPlaceholder: "Assign album",
         albumOptions: {
           isa: "Isa and me",
           guests: "Guests",
@@ -1301,8 +1310,11 @@
       document.querySelector("#lblGuestName span").textContent = t.labelName;
       guestNameInput.placeholder = t.placeholderName;
       document.querySelector("#lblPhotoAlbum span").textContent = t.labelAlbum;
+      photoAlbumSelect.options[0].textContent = t.albumPlaceholder;
       Array.from(photoAlbumSelect.options).forEach(option => {
-        option.textContent = t.albumOptions[option.value];
+        if (option.value) {
+          option.textContent = t.albumOptions[option.value];
+        }
       });
       document.querySelector("#lblGuestMsg span").textContent = t.labelMsg;
       guestMessageInput.placeholder = t.placeholderMsg;
@@ -1535,6 +1547,12 @@
 
       if (!guestName) {
         alert(t.alertNoName);
+        return;
+      }
+
+      if (!photoAlbum) {
+        alert(t.albumPlaceholder);
+        photoAlbumSelect.focus();
         return;
       }
 
