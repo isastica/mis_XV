@@ -490,7 +490,8 @@
       text-transform: uppercase;
     }
     .form-group input[type="text"],
-    .form-group textarea {
+    .form-group textarea,
+    .form-group select {
       width: 100%;
       padding: 12px 14px;
       border: 1px solid #e0d2b7;
@@ -503,7 +504,8 @@
       transition: border-color 0.3s;
     }
     .form-group input[type="text"]:focus,
-    .form-group textarea:focus {
+    .form-group textarea:focus,
+    .form-group select:focus {
       border-color: var(--gold-primary);
       box-shadow: 0 0 0 3px rgba(203, 161, 53, 0.2);
     }
@@ -675,6 +677,16 @@
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+    .photo-album-name {
+      color: var(--gold-dark);
+      font-size: 0.75rem;
+      margin-top: 5px;
+      letter-spacing: 0.3px;
+    }
+    .photo-album-name i {
+      color: var(--gold-primary);
+      margin-right: 3px;
     }
     .photo-guest-msg {
       font-family: 'Cormorant Garamond', serif;
@@ -950,6 +962,16 @@
           </div>
 
           <div class="form-group">
+            <label for="photoAlbum" id="lblPhotoAlbum"><i class="fa-solid fa-folder-open"></i> <span>Álbum:</span></label>
+            <select id="photoAlbum">
+              <option value="isa">Isa y yo</option>
+              <option value="guests">Invitados</option>
+              <option value="misa">Misa</option>
+              <option value="reception">Recepción</option>
+            </select>
+          </div>
+
+          <div class="form-group">
             <label for="guestMessage" id="lblGuestMsg"><i class="fa-solid fa-comment-heart"></i> <span>Mensaje para Isa (Opcional):</span></label>
             <textarea id="guestMessage" rows="2" placeholder="¡Felicidades Isa! Te deseamos lo mejor..."></textarea>
           </div>
@@ -1014,7 +1036,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.03</div>
+      <div class="version-tag">v1.00.04</div>
     </footer>
 
   </div><!-- /container -->
@@ -1096,6 +1118,13 @@
         albumDesc: "Sube tus fotos de la fiesta y déjale un lindo mensaje a Isa",
         labelName: "Tu Nombre / Familia:",
         placeholderName: "Ej: Familia Morales / Tía Rosa",
+        labelAlbum: "Álbum:",
+        albumOptions: {
+          isa: "Isa y yo",
+          guests: "Invitados",
+          misa: "Misa",
+          reception: "Recepción"
+        },
         labelMsg: "Mensaje para Isa (Opcional):",
         placeholderMsg: "¡Felicidades Isa! Te deseamos lo mejor...",
         labelPhoto: "Elige cómo subir tu foto:",
@@ -1147,6 +1176,13 @@
         albumDesc: "Upload your party photos and leave a sweet message for Isa",
         labelName: "Your Name / Family:",
         placeholderName: "E.g. Morales Family / Aunt Rosa",
+        labelAlbum: "Album:",
+        albumOptions: {
+          isa: "Isa and me",
+          guests: "Guests",
+          misa: "Mass",
+          reception: "Reception"
+        },
         labelMsg: "Message for Isa (Optional):",
         placeholderMsg: "Congratulations Isa! Wishing you the best...",
         labelPhoto: "Choose how to upload your photo:",
@@ -1210,6 +1246,7 @@
     const submitBtn = document.getElementById("submitBtn");
     const galleryGrid = document.getElementById("galleryGrid");
     const guestNameInput = document.getElementById("guestName");
+    const photoAlbumSelect = document.getElementById("photoAlbum");
     const guestMessageInput = document.getElementById("guestMessage");
 
     let currentPhotoBase64 = "";
@@ -1263,6 +1300,10 @@
       document.getElementById("txtAlbumDesc").textContent = t.albumDesc;
       document.querySelector("#lblGuestName span").textContent = t.labelName;
       guestNameInput.placeholder = t.placeholderName;
+      document.querySelector("#lblPhotoAlbum span").textContent = t.labelAlbum;
+      Array.from(photoAlbumSelect.options).forEach(option => {
+        option.textContent = t.albumOptions[option.value];
+      });
       document.querySelector("#lblGuestMsg span").textContent = t.labelMsg;
       guestMessageInput.placeholder = t.placeholderMsg;
       document.querySelector("#lblChoosePhoto span").textContent = t.labelPhoto;
@@ -1437,6 +1478,7 @@
               <i class="fa-solid fa-user-tag" style="font-size:0.8rem; color:#cba135;"></i>
               ${escapeHtml(item.name)}
             </div>
+            ${item.album ? `<div class="photo-album-name"><i class="fa-solid fa-folder-open"></i> ${escapeHtml(t.albumOptions[item.album] || item.album)}</div>` : ""}
             ${item.message ? `<div class="photo-guest-msg">"${escapeHtml(item.message)}"</div>` : ""}
             <div class="photo-card-footer">
               <span class="photo-time"><i class="fa-regular fa-clock"></i> ${dateStr}</span>
@@ -1488,6 +1530,7 @@
       }
 
       const guestName = guestNameInput.value.trim();
+      const photoAlbum = photoAlbumSelect.value;
       const guestMessage = guestMessageInput.value.trim();
 
       if (!guestName) {
@@ -1501,6 +1544,7 @@
       try {
         await addDoc(photosCollection, {
           name: guestName,
+          album: photoAlbum,
           message: guestMessage,
           image: currentPhotoBase64,
           createdAt: serverTimestamp()
