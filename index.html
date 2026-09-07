@@ -695,21 +695,6 @@
       color: var(--text-muted);
       display: inline-block;
     }
-    .photo-delete-btn {
-      background: none;
-      border: none;
-      color: #b78a3c;
-      font-size: 0.78rem;
-      cursor: pointer;
-      padding: 3px 6px;
-      border-radius: 4px;
-      transition: all 0.2s;
-    }
-    .photo-delete-btn:hover {
-      color: #d93838;
-      background: #ffebeb;
-    }
-
     .empty-gallery {
       grid-column: 1 / -1;
       text-align: center;
@@ -1029,7 +1014,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.02</div>
+      <div class="version-tag">v1.00.03</div>
     </footer>
 
   </div><!-- /container -->
@@ -1081,7 +1066,6 @@
       onSnapshot, 
       query, 
       orderBy, 
-      deleteDoc, 
       doc, 
       serverTimestamp 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -1129,7 +1113,6 @@
         alertNoPhoto: "Por favor toma o selecciona una foto primero.",
         alertNoName: "Por favor escribe tu nombre.",
         alertDelConfirm: "¿Deseas eliminar permanentemente la foto de \"{name}\" del álbum común?",
-        btnDeleteTitle: "Eliminar foto de la nube",
         recentTime: "Reciente",
         photoSelected: "Foto seleccionada: ",
         errorInvalidImg: "Por favor selecciona un archivo de imagen válido.",
@@ -1181,7 +1164,6 @@
         alertNoPhoto: "Please take or select a photo first.",
         alertNoName: "Please enter your name.",
         alertDelConfirm: "Are you sure you want to permanently delete \"{name}\"'s photo from the shared album?",
-        btnDeleteTitle: "Delete photo from cloud",
         recentTime: "Recent",
         photoSelected: "Photo selected: ",
         errorInvalidImg: "Please select a valid image file.",
@@ -1458,9 +1440,6 @@
             ${item.message ? `<div class="photo-guest-msg">"${escapeHtml(item.message)}"</div>` : ""}
             <div class="photo-card-footer">
               <span class="photo-time"><i class="fa-regular fa-clock"></i> ${dateStr}</span>
-              <button class="photo-delete-btn" data-delete-id="${item.id}" data-name="${escapeHtml(item.name)}" title="${t.btnDeleteTitle}">
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
             </div>
           </div>
         `;
@@ -1476,21 +1455,6 @@
         });
       });
 
-      galleryGrid.querySelectorAll(".photo-delete-btn").forEach(btn => {
-        btn.addEventListener("click", async (e) => {
-          e.stopPropagation();
-          const id = btn.getAttribute("data-delete-id");
-          const name = btn.getAttribute("data-name");
-          const confirmMsg = t.alertDelConfirm.replace("{name}", name);
-          if (confirm(confirmMsg)) {
-            try {
-              await deleteDoc(doc(db, "guest_photos", id));
-            } catch (err) {
-              alert(err.message);
-            }
-          }
-        });
-      });
     }
 
     // Real-Time Cloud Listener
