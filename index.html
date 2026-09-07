@@ -284,6 +284,15 @@
       margin-bottom: 12px;
       text-transform: uppercase;
     }
+    .celebration-message {
+      display: none;
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      letter-spacing: 2px;
+      color: var(--gold-dark);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
     .countdown-grid {
       display: flex;
       justify-content: center;
@@ -887,6 +896,7 @@
             <span class="label" id="lblSeconds">Seg</span>
           </div>
         </div>
+        <div class="celebration-message" id="celebrationMessage">¡Que comiencen los festejos!</div>
       </div>
 
       <div class="heart-divider">
@@ -1043,7 +1053,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.06</div>
+      <div class="version-tag">v1.00.07</div>
     </footer>
 
   </div><!-- /container -->
@@ -1059,12 +1069,18 @@
   <script>
     // 1. COUNTDOWN TIMER TO SEPT 26, 2026 11:00 AM
     const targetDate = new Date("September 26, 2026 11:00:00").getTime();
+    const countdownTitle = document.getElementById("txtCountdownTitle");
+    const countdownGrid = document.querySelector(".countdown-grid");
+    const celebrationMessage = document.getElementById("celebrationMessage");
 
     function updateCountdown() {
       const now = new Date().getTime();
       const difference = targetDate - now;
 
       if (difference > 0) {
+        countdownTitle.style.display = "block";
+        countdownGrid.style.display = "flex";
+        celebrationMessage.style.display = "none";
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
@@ -1075,10 +1091,9 @@
         document.getElementById("cd-minutes").textContent = String(minutes).padStart(2, '0');
         document.getElementById("cd-seconds").textContent = String(seconds).padStart(2, '0');
       } else {
-        document.getElementById("cd-days").textContent = "00";
-        document.getElementById("cd-hours").textContent = "00";
-        document.getElementById("cd-minutes").textContent = "00";
-        document.getElementById("cd-seconds").textContent = "00";
+        countdownTitle.style.display = "none";
+        countdownGrid.style.display = "none";
+        celebrationMessage.style.display = "block";
       }
     }
     setInterval(updateCountdown, 1000);
@@ -1109,6 +1124,7 @@
         dayText: "SÁBADO",
         monthYear: "SEPTIEMBRE 2026",
         countdownTitle: "Faltan para el gran día",
+        celebrationMessage: "¡Que comiencen los festejos!",
         cdDays: "Días",
         cdHours: "Horas",
         cdMin: "Min",
@@ -1168,6 +1184,7 @@
         dayText: "SATURDAY",
         monthYear: "SEPTEMBER 2026",
         countdownTitle: "Countdown to the big day",
+        celebrationMessage: "Let the celebrations begin!",
         cdDays: "Days",
         cdHours: "Hours",
         cdMin: "Min",
@@ -1287,6 +1304,7 @@
       document.getElementById("txtDay").textContent = t.dayText;
       document.getElementById("txtMonthYear").textContent = t.monthYear;
       document.querySelector("#txtCountdownTitle span").textContent = t.countdownTitle;
+      document.getElementById("celebrationMessage").textContent = t.celebrationMessage;
       document.getElementById("lblDays").textContent = t.cdDays;
       document.getElementById("lblHours").textContent = t.cdHours;
       document.getElementById("lblMinutes").textContent = t.cdMin;
