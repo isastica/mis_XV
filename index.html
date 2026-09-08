@@ -734,6 +734,10 @@
       border-bottom: 1px solid transparent;
       scrollbar-width: thin;
     }
+    .album-filters-anchor {
+      height: 1px;
+      scroll-margin-top: 8px;
+    }
     .album-filters.is-stuck {
       border-bottom-color: var(--border-gold);
       box-shadow: 0 6px 14px rgba(140, 104, 24, 0.1);
@@ -1182,6 +1186,7 @@
         </form>
       </div>
 
+      <div class="album-filters-anchor" id="albumFiltersAnchor"></div>
       <nav class="album-filters" id="albumFilters" aria-label="Filtros de álbum">
         <button type="button" class="album-filter active" data-album-filter="all">Todas</button>
         <button type="button" class="album-filter" data-album-filter="isa">Isa y yo</button>
@@ -1202,7 +1207,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.13</div>
+      <div class="version-tag">v1.00.14</div>
     </footer>
 
   </div><!-- /container -->
@@ -1433,6 +1438,7 @@
     const photoAlbumSelect = document.getElementById("photoAlbum");
     const guestMessageInput = document.getElementById("guestMessage");
     const albumFilters = document.getElementById("albumFilters");
+    const albumFiltersAnchor = document.getElementById("albumFiltersAnchor");
     const backToFilters = document.getElementById("backToFilters");
     const filterButtons = Array.from(document.querySelectorAll(".album-filter"));
 
@@ -1550,7 +1556,7 @@
     window.addEventListener("scroll", updateStickyFilterState, { passive: true });
     window.addEventListener("resize", updateStickyFilterState);
     backToFilters.addEventListener("click", () => {
-      albumFilters.scrollIntoView({ behavior: "smooth", block: "start" });
+      albumFiltersAnchor.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
     // Trigger Camera & Gallery Pickers
