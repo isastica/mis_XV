@@ -323,8 +323,18 @@
       .photo-carousel-banner {
         --carousel-duration: 54s;
       }
+      @media (orientation: portrait) {
+        .photo-carousel-banner {
+          --carousel-duration: 162s;
+        }
+      }
       .carousel-photo {
         flex-basis: 170px;
+      }
+    }
+    @media (min-width: 601px) and (max-width: 1000px) and (max-height: 600px) {
+      .photo-carousel-banner {
+        --carousel-duration: 54s;
       }
     }
 
@@ -1208,7 +1218,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.19</div>
+      <div class="version-tag">v1.00.21</div>
     </footer>
 
   </div><!-- /container -->
@@ -1772,7 +1782,7 @@
 
       const groups = Array.from(track.children);
       const groupWidth = groups[0].getBoundingClientRect().width;
-      const durationSeconds = window.matchMedia("(max-width: 600px)").matches ? 54 : 16;
+      const durationSeconds = parseFloat(getComputedStyle(photoCarouselBanner).getPropertyValue("--carousel-duration")) || 16;
       const pixelsPerSecond = groupWidth / durationSeconds;
       let startTime;
 
@@ -1785,6 +1795,17 @@
         groups.forEach((group, index) => {
           group.style.transform = `translate3d(${groupPositions[index]}px, 0, 0)`;
         });
+
+        const bannerRect = photoCarouselBanner.getBoundingClientRect();
+        const hasCoverage = groups.some((group) => {
+          const groupRect = group.getBoundingClientRect();
+          return groupRect.right > bannerRect.left && groupRect.left < bannerRect.right;
+        });
+
+        if (!hasCoverage) {
+          groups[0].style.transform = "translate3d(0, 0, 0)";
+          groups[1].style.transform = `translate3d(${groupWidth}px, 0, 0)`;
+        }
         carouselFrame = requestAnimationFrame(moveCarousel);
       }
 
