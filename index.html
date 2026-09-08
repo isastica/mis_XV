@@ -283,23 +283,24 @@
       top: 8px;
       left: 0;
       height: calc(100% - 20px);
-      display: flex;
-      width: max-content;
+      width: 100%;
       z-index: 1;
     }
     .carousel-group {
+      position: absolute;
+      top: 0;
+      left: 0;
       display: flex;
       flex: 0 0 auto;
       gap: 3px;
       height: 100%;
+      width: max-content;
     }
     .carousel-photo {
       flex: 0 0 220px;
       height: 100%;
       padding: 4px;
       border: 1px solid var(--gold-primary);
-      background: #fffdf9;
-      box-shadow: 0 8px 20px rgba(140, 104, 24, 0.2);
     }
     .carousel-photo img {
       display: block;
@@ -1207,7 +1208,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.16</div>
+      <div class="version-tag">v1.00.17</div>
     </footer>
 
   </div><!-- /container -->
@@ -1769,17 +1770,29 @@
 
       photoCarouselBanner.appendChild(track);
 
-      const firstGroup = track.firstElementChild;
-      const groupWidth = firstGroup.getBoundingClientRect().width;
+      const groups = Array.from(track.children);
+      const groupWidth = groups[0].getBoundingClientRect().width;
       const durationSeconds = window.matchMedia("(max-width: 600px)").matches ? 54 : 16;
       const pixelsPerSecond = groupWidth / durationSeconds;
-      let startTime;
+      let previousTime;
+      let groupPositions = [0, groupWidth];
 
       function moveCarousel(timestamp) {
-        if (!startTime) startTime = timestamp;
-        const elapsedSeconds = (timestamp - startTime) / 1000;
-        const offset = -((elapsedSeconds * pixelsPerSecond) % groupWidth);
-        track.style.transform = `translate3d(${offset}px, 0, 0)`;
+        if (!previousTime) previousTime = timestamp;
+        const elapsedSeconds = (timestamp - previousTime) / 1000;
+        const distance = pixelsPerSecond * elapsedSeconds;
+        previousTime = timestamp;
+
+        groupPositions = groupPositions.map((position) => {
+          const nextPosition = position - distance;
+          return nextPosition <= -groupWidth
+            ? nextPosition + (groupWidth * 2)
+            : nextPosition;
+        });
+
+        groups.forEach((group, index) => {
+          group.style.transform = `translate3d(${groupPositions[index]}px, 0, 0)`;
+        });
         carouselFrame = requestAnimationFrame(moveCarousel);
       }
 
