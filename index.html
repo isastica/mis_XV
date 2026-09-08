@@ -283,13 +283,12 @@
       top: 8px;
       left: 0;
       height: calc(100% - 20px);
-      width: 100%;
+      display: flex;
+      width: max-content;
+      animation: carousel-marquee var(--carousel-duration) linear infinite;
       z-index: 1;
     }
     .carousel-group {
-      position: absolute;
-      top: 0;
-      left: 0;
       display: flex;
       flex: 0 0 auto;
       gap: 3px;
@@ -309,6 +308,10 @@
       object-fit: cover;
       transform: scale(1.04);
       animation: photo-detail-zoom var(--carousel-duration) ease-in-out infinite alternate;
+    }
+    @keyframes carousel-marquee {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-50%, 0, 0); }
     }
     @keyframes photo-detail-zoom {
       from { transform: scale(1.04); }
@@ -1218,7 +1221,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.21</div>
+      <div class="version-tag">v1.00.22</div>
     </footer>
 
   </div><!-- /container -->
@@ -1456,7 +1459,6 @@
     let currentPhotoBase64 = "";
     let selectedFileName = "";
     let livePhotos = [];
-    let carouselFrame;
     let activeAlbumFilter = "all";
 
     // --- APPLY LANGUAGE FUNCTION ---
@@ -1744,7 +1746,6 @@
     }
 
     function updatePhotoCarousel() {
-      cancelAnimationFrame(carouselFrame);
       photoCarouselBanner.innerHTML = "";
 
       if (livePhotos.length < 7) {
@@ -1780,36 +1781,6 @@
 
       photoCarouselBanner.appendChild(track);
 
-      const groups = Array.from(track.children);
-      const groupWidth = groups[0].getBoundingClientRect().width;
-      const durationSeconds = parseFloat(getComputedStyle(photoCarouselBanner).getPropertyValue("--carousel-duration")) || 16;
-      const pixelsPerSecond = groupWidth / durationSeconds;
-      let startTime;
-
-      function moveCarousel(timestamp) {
-        if (!startTime) startTime = timestamp;
-        const elapsedSeconds = (timestamp - startTime) / 1000;
-        const distance = (elapsedSeconds * pixelsPerSecond) % groupWidth;
-        const groupPositions = [-distance, groupWidth - distance];
-
-        groups.forEach((group, index) => {
-          group.style.transform = `translate3d(${groupPositions[index]}px, 0, 0)`;
-        });
-
-        const bannerRect = photoCarouselBanner.getBoundingClientRect();
-        const hasCoverage = groups.some((group) => {
-          const groupRect = group.getBoundingClientRect();
-          return groupRect.right > bannerRect.left && groupRect.left < bannerRect.right;
-        });
-
-        if (!hasCoverage) {
-          groups[0].style.transform = "translate3d(0, 0, 0)";
-          groups[1].style.transform = `translate3d(${groupWidth}px, 0, 0)`;
-        }
-        carouselFrame = requestAnimationFrame(moveCarousel);
-      }
-
-      carouselFrame = requestAnimationFrame(moveCarousel);
     }
 
     // Real-Time Cloud Listener
