@@ -307,7 +307,7 @@
     }
     @keyframes photo-strip {
       from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
+      to { transform: translateX(-33.333333%); }
     }
     @keyframes photo-detail-zoom {
       from { transform: scale(1.04); }
@@ -320,7 +320,7 @@
         height: 220px;
       }
       .photo-carousel-banner {
-        --carousel-duration: 32s;
+        --carousel-duration: 54s;
       }
       .carousel-photo {
         flex-basis: 170px;
@@ -1136,7 +1136,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.11</div>
+      <div class="version-tag">v1.00.12</div>
     </footer>
 
   </div><!-- /container -->
@@ -1625,7 +1625,7 @@
       photoCarouselBanner.classList.add("visible");
       const positions = ["center", "center top", "center 35%", "center 65%", "left center", "right center"];
       const shuffledPhotos = [...livePhotos].sort(() => Math.random() - 0.5);
-      const stripPhotos = [...shuffledPhotos, ...shuffledPhotos];
+      const stripPhotos = [...shuffledPhotos, ...shuffledPhotos, ...shuffledPhotos];
       const track = document.createElement("div");
 
       track.className = "carousel-track";
