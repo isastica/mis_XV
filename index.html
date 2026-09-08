@@ -85,7 +85,7 @@
       align-items: center;
       gap: 8px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.88rem;
+      will-change: transform;
       user-select: none;
     }
     .lang-btn {
@@ -285,7 +285,6 @@
       height: calc(100% - 20px);
       display: flex;
       width: max-content;
-      animation: photo-strip var(--carousel-duration) linear infinite;
       z-index: 1;
     }
     .carousel-group {
@@ -309,10 +308,6 @@
       object-fit: cover;
       transform: scale(1.04);
       animation: photo-detail-zoom var(--carousel-duration) ease-in-out infinite alternate;
-    }
-    @keyframes photo-strip {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
     }
     @keyframes photo-detail-zoom {
       from { transform: scale(1.04); }
@@ -1212,7 +1207,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.15</div>
+      <div class="version-tag">v1.00.16</div>
     </footer>
 
   </div><!-- /container -->
@@ -1450,6 +1445,7 @@
     let currentPhotoBase64 = "";
     let selectedFileName = "";
     let livePhotos = [];
+    let carouselFrame;
     let activeAlbumFilter = "all";
 
     // --- APPLY LANGUAGE FUNCTION ---
@@ -1737,6 +1733,7 @@
     }
 
     function updatePhotoCarousel() {
+      cancelAnimationFrame(carouselFrame);
       photoCarouselBanner.innerHTML = "";
 
       if (livePhotos.length < 7) {
@@ -1771,6 +1768,22 @@
       });
 
       photoCarouselBanner.appendChild(track);
+
+      const firstGroup = track.firstElementChild;
+      const groupWidth = firstGroup.getBoundingClientRect().width;
+      const durationSeconds = window.matchMedia("(max-width: 600px)").matches ? 54 : 16;
+      const pixelsPerSecond = groupWidth / durationSeconds;
+      let startTime;
+
+      function moveCarousel(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const elapsedSeconds = (timestamp - startTime) / 1000;
+        const offset = -((elapsedSeconds * pixelsPerSecond) % groupWidth);
+        track.style.transform = `translate3d(${offset}px, 0, 0)`;
+        carouselFrame = requestAnimationFrame(moveCarousel);
+      }
+
+      carouselFrame = requestAnimationFrame(moveCarousel);
     }
 
     // Real-Time Cloud Listener
