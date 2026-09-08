@@ -248,6 +248,7 @@
     }
 
     .photo-carousel-banner {
+      --carousel-duration: 16s;
       display: none;
       position: relative;
       width: 100%;
@@ -285,7 +286,7 @@
       display: flex;
       gap: 3px;
       width: max-content;
-      animation: photo-strip 16s linear infinite;
+      animation: photo-strip var(--carousel-duration) linear infinite;
       z-index: 1;
     }
     .carousel-photo {
@@ -302,7 +303,7 @@
       height: 100%;
       object-fit: cover;
       transform: scale(1.04);
-      animation: photo-detail-zoom 16s ease-in-out forwards;
+      animation: photo-detail-zoom var(--carousel-duration) ease-in-out infinite alternate;
     }
     @keyframes photo-strip {
       from { transform: translateX(0); }
@@ -317,6 +318,9 @@
       .photo-carousel-banner {
         min-height: 220px;
         height: 220px;
+      }
+      .photo-carousel-banner {
+        --carousel-duration: 32s;
       }
       .carousel-photo {
         flex-basis: 170px;
@@ -1132,7 +1136,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.10</div>
+      <div class="version-tag">v1.00.11</div>
     </footer>
 
   </div><!-- /container -->
@@ -1358,7 +1362,6 @@
     let currentPhotoBase64 = "";
     let selectedFileName = "";
     let livePhotos = [];
-    let carouselTimer;
 
     // --- APPLY LANGUAGE FUNCTION ---
     function applyLanguage(lang) {
@@ -1612,7 +1615,6 @@
     }
 
     function updatePhotoCarousel() {
-      clearTimeout(carouselTimer);
       photoCarouselBanner.innerHTML = "";
 
       if (livePhotos.length < 7) {
@@ -1641,8 +1643,6 @@
       });
 
       photoCarouselBanner.appendChild(track);
-
-      carouselTimer = setTimeout(updatePhotoCarousel, 16000);
     }
 
     // Real-Time Cloud Listener
