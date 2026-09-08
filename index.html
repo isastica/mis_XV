@@ -244,6 +244,77 @@
       padding: 18px 10px;
       margin: 25px 0;
       text-align: center;
+      min-height: 258px;
+    }
+
+    .photo-carousel-banner {
+      display: none;
+      position: relative;
+      width: 100%;
+      height: 258px;
+      margin: 25px 0;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(254, 249, 231, 0.95), rgba(255, 243, 204, 0.7));
+      border-top: 1px solid var(--border-gold);
+      border-bottom: 1px solid var(--border-gold);
+      isolation: isolate;
+    }
+    .photo-carousel-banner.visible {
+      display: block;
+    }
+    .photo-carousel-banner::before,
+    .photo-carousel-banner::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .photo-carousel-banner::before {
+      border: 1px solid rgba(203, 161, 53, 0.25);
+      box-shadow: inset 0 0 30px rgba(140, 104, 24, 0.12);
+    }
+    .photo-carousel-banner::after {
+      background: linear-gradient(90deg, rgba(255, 253, 249, 0.55), transparent 16%, transparent 84%, rgba(255, 253, 249, 0.55));
+    }
+    .carousel-photo {
+      position: absolute;
+      top: 10px;
+      left: 100%;
+      width: 230px;
+      height: calc(100% - 20px);
+      padding: 5px;
+      border: 1px solid var(--gold-primary);
+      background: #fffdf9;
+      box-shadow: 0 8px 20px rgba(140, 104, 24, 0.2);
+      animation: photo-sweep 8s linear forwards;
+      z-index: 1;
+    }
+    .carousel-photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.04);
+      animation: photo-detail-zoom 8s ease-in-out forwards;
+    }
+    @keyframes photo-sweep {
+      from { left: 100%; transform: translateX(0) rotate(2deg); }
+      to { left: 0; transform: translateX(-100%) rotate(-2deg); }
+    }
+    @keyframes photo-detail-zoom {
+      from { transform: scale(1.04); }
+      to { transform: scale(1.18); }
+    }
+    @media (max-width: 600px) {
+      .date-banner,
+      .photo-carousel-banner {
+        min-height: 220px;
+        height: 220px;
+      }
+      .carousel-photo {
+        width: 190px;
+      }
     }
 
     .day-text {
@@ -968,6 +1039,8 @@
         <p id="txtAlbumDesc">Sube tus fotos de la fiesta y déjale un lindo mensaje a Isa</p>
       </div>
 
+      <div class="photo-carousel-banner" id="photoCarouselBanner" aria-hidden="true"></div>
+
       <!-- Upload Form -->
       <div class="upload-form-card">
         <form id="photoUploadForm">
@@ -1053,7 +1126,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.07</div>
+      <div class="version-tag">v1.00.08</div>
     </footer>
 
   </div><!-- /container -->
@@ -1271,6 +1344,7 @@
     const photoUploadForm = document.getElementById("photoUploadForm");
     const submitBtn = document.getElementById("submitBtn");
     const galleryGrid = document.getElementById("galleryGrid");
+    const photoCarouselBanner = document.getElementById("photoCarouselBanner");
     const guestNameInput = document.getElementById("guestName");
     const photoAlbumSelect = document.getElementById("photoAlbum");
     const guestMessageInput = document.getElementById("guestMessage");
@@ -1278,6 +1352,7 @@
     let currentPhotoBase64 = "";
     let selectedFileName = "";
     let livePhotos = [];
+    let carouselTimer;
 
     // --- APPLY LANGUAGE FUNCTION ---
     function applyLanguage(lang) {
@@ -1477,6 +1552,7 @@
     function renderGalleryCards() {
       const t = i18n[currentLang];
       galleryGrid.innerHTML = "";
+      updatePhotoCarousel();
 
       if (livePhotos.length === 0) {
         galleryGrid.innerHTML = `
@@ -1527,6 +1603,31 @@
         });
       });
 
+    }
+
+    function updatePhotoCarousel() {
+      clearTimeout(carouselTimer);
+      photoCarouselBanner.innerHTML = "";
+
+      if (livePhotos.length < 7) {
+        photoCarouselBanner.classList.remove("visible");
+        return;
+      }
+
+      photoCarouselBanner.classList.add("visible");
+      const photo = livePhotos[Math.floor(Math.random() * livePhotos.length)];
+      const imageFrame = document.createElement("div");
+      const image = document.createElement("img");
+      const positions = ["center", "center top", "center 35%", "center 65%", "left center", "right center"];
+
+      imageFrame.className = "carousel-photo";
+      image.src = photo.image;
+      image.alt = "";
+      image.style.objectPosition = positions[Math.floor(Math.random() * positions.length)];
+      imageFrame.appendChild(image);
+      photoCarouselBanner.appendChild(imageFrame);
+
+      carouselTimer = setTimeout(updatePhotoCarousel, 8000);
     }
 
     // Real-Time Cloud Listener
