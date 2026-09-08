@@ -284,10 +284,15 @@
       left: 0;
       height: calc(100% - 20px);
       display: flex;
-      gap: 3px;
       width: max-content;
       animation: photo-strip var(--carousel-duration) linear infinite;
       z-index: 1;
+    }
+    .carousel-group {
+      display: flex;
+      flex: 0 0 auto;
+      gap: 3px;
+      height: 100%;
     }
     .carousel-photo {
       flex: 0 0 220px;
@@ -307,7 +312,7 @@
     }
     @keyframes photo-strip {
       from { transform: translateX(0); }
-      to { transform: translateX(-33.333333%); }
+      to { transform: translateX(-50%); }
     }
     @keyframes photo-detail-zoom {
       from { transform: scale(1.04); }
@@ -1207,7 +1212,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.14</div>
+      <div class="version-tag">v1.00.15</div>
     </footer>
 
   </div><!-- /container -->
@@ -1742,21 +1747,27 @@
       photoCarouselBanner.classList.add("visible");
       const positions = ["center", "center top", "center 35%", "center 65%", "left center", "right center"];
       const shuffledPhotos = [...livePhotos].sort(() => Math.random() - 0.5);
-      const stripPhotos = [...shuffledPhotos, ...shuffledPhotos, ...shuffledPhotos];
       const track = document.createElement("div");
 
       track.className = "carousel-track";
 
-      stripPhotos.forEach((photo) => {
-        const imageFrame = document.createElement("div");
-        const image = document.createElement("img");
+      [shuffledPhotos, shuffledPhotos].forEach((photoGroup) => {
+        const group = document.createElement("div");
+        group.className = "carousel-group";
 
-        imageFrame.className = "carousel-photo";
-        image.src = photo.image;
-        image.alt = "";
-        image.style.objectPosition = positions[Math.floor(Math.random() * positions.length)];
-        imageFrame.appendChild(image);
-        track.appendChild(imageFrame);
+        photoGroup.forEach((photo) => {
+          const imageFrame = document.createElement("div");
+          const image = document.createElement("img");
+
+          imageFrame.className = "carousel-photo";
+          image.src = photo.image;
+          image.alt = "";
+          image.style.objectPosition = positions[Math.floor(Math.random() * positions.length)];
+          imageFrame.appendChild(image);
+          group.appendChild(imageFrame);
+        });
+
+        track.appendChild(group);
       });
 
       photoCarouselBanner.appendChild(track);
