@@ -1208,7 +1208,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.18</div>
+      <div class="version-tag">v1.00.19</div>
     </footer>
 
   </div><!-- /container -->
@@ -1774,21 +1774,13 @@
       const groupWidth = groups[0].getBoundingClientRect().width;
       const durationSeconds = window.matchMedia("(max-width: 600px)").matches ? 54 : 16;
       const pixelsPerSecond = groupWidth / durationSeconds;
-      let previousTime;
-      let groupPositions = [0, groupWidth];
+      let startTime;
 
       function moveCarousel(timestamp) {
-        if (!previousTime) previousTime = timestamp;
-        const elapsedSeconds = (timestamp - previousTime) / 1000;
-        const distance = pixelsPerSecond * elapsedSeconds;
-        previousTime = timestamp;
-
-        groupPositions = groupPositions.map((position) => {
-          const nextPosition = position - distance;
-          return nextPosition <= -groupWidth
-            ? nextPosition + (groupWidth * 2)
-            : nextPosition;
-        });
+        if (!startTime) startTime = timestamp;
+        const elapsedSeconds = (timestamp - startTime) / 1000;
+        const distance = (elapsedSeconds * pixelsPerSecond) % groupWidth;
+        const groupPositions = [-distance, groupWidth - distance];
 
         groups.forEach((group, index) => {
           group.style.transform = `translate3d(${groupPositions[index]}px, 0, 0)`;
