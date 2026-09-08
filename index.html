@@ -277,18 +277,24 @@
     .photo-carousel-banner::after {
       background: linear-gradient(90deg, rgba(255, 253, 249, 0.55), transparent 16%, transparent 84%, rgba(255, 253, 249, 0.55));
     }
-    .carousel-photo {
+    .carousel-track {
       position: absolute;
-      top: 10px;
-      left: 100%;
-      width: 230px;
+      top: 8px;
+      left: 0;
       height: calc(100% - 20px);
-      padding: 5px;
+      display: flex;
+      gap: 3px;
+      width: max-content;
+      animation: photo-strip 8s linear infinite;
+      z-index: 1;
+    }
+    .carousel-photo {
+      flex: 0 0 220px;
+      height: 100%;
+      padding: 4px;
       border: 1px solid var(--gold-primary);
       background: #fffdf9;
       box-shadow: 0 8px 20px rgba(140, 104, 24, 0.2);
-      animation: photo-sweep 8s linear forwards;
-      z-index: 1;
     }
     .carousel-photo img {
       display: block;
@@ -298,9 +304,9 @@
       transform: scale(1.04);
       animation: photo-detail-zoom 8s ease-in-out forwards;
     }
-    @keyframes photo-sweep {
-      from { left: 100%; transform: translateX(0) rotate(2deg); }
-      to { left: 0; transform: translateX(-100%) rotate(-2deg); }
+    @keyframes photo-strip {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
     }
     @keyframes photo-detail-zoom {
       from { transform: scale(1.04); }
@@ -313,7 +319,7 @@
         height: 220px;
       }
       .carousel-photo {
-        width: 190px;
+        flex-basis: 170px;
       }
     }
 
@@ -1126,7 +1132,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.08</div>
+      <div class="version-tag">v1.00.09</div>
     </footer>
 
   </div><!-- /container -->
@@ -1615,17 +1621,26 @@
       }
 
       photoCarouselBanner.classList.add("visible");
-      const photo = livePhotos[Math.floor(Math.random() * livePhotos.length)];
-      const imageFrame = document.createElement("div");
-      const image = document.createElement("img");
       const positions = ["center", "center top", "center 35%", "center 65%", "left center", "right center"];
+      const shuffledPhotos = [...livePhotos].sort(() => Math.random() - 0.5);
+      const stripPhotos = [...shuffledPhotos, ...shuffledPhotos];
+      const track = document.createElement("div");
 
-      imageFrame.className = "carousel-photo";
-      image.src = photo.image;
-      image.alt = "";
-      image.style.objectPosition = positions[Math.floor(Math.random() * positions.length)];
-      imageFrame.appendChild(image);
-      photoCarouselBanner.appendChild(imageFrame);
+      track.className = "carousel-track";
+
+      stripPhotos.forEach((photo) => {
+        const imageFrame = document.createElement("div");
+        const image = document.createElement("img");
+
+        imageFrame.className = "carousel-photo";
+        image.src = photo.image;
+        image.alt = "";
+        image.style.objectPosition = positions[Math.floor(Math.random() * positions.length)];
+        imageFrame.appendChild(image);
+        track.appendChild(imageFrame);
+      });
+
+      photoCarouselBanner.appendChild(track);
 
       carouselTimer = setTimeout(updatePhotoCarousel, 8000);
     }
