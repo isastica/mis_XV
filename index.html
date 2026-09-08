@@ -721,6 +721,64 @@
       margin-top: 10px;
     }
 
+    .album-filters {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 12px 0;
+      margin: 0 0 20px;
+      background: #ffffff;
+      border-bottom: 1px solid transparent;
+      scrollbar-width: thin;
+    }
+    .album-filters.is-stuck {
+      border-bottom-color: var(--border-gold);
+      box-shadow: 0 6px 14px rgba(140, 104, 24, 0.1);
+    }
+    .album-filter {
+      flex: 0 0 auto;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      padding: 5px 8px;
+      background: transparent;
+      color: #9e917e;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .album-filter.active {
+      color: var(--gold-dark);
+      border-bottom-color: var(--gold-primary);
+    }
+    .back-to-filters {
+      display: none;
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 40;
+      border: 1px solid var(--gold-primary);
+      border-radius: 20px;
+      padding: 10px 14px;
+      background: #fffdf9;
+      color: var(--gold-dark);
+      box-shadow: 0 5px 16px rgba(140, 104, 24, 0.2);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .back-to-filters.visible {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     /* Photo Gallery Grid */
     .gallery-grid {
       display: grid;
@@ -1124,6 +1182,14 @@
         </form>
       </div>
 
+      <nav class="album-filters" id="albumFilters" aria-label="Filtros de álbum">
+        <button type="button" class="album-filter active" data-album-filter="all">Todas</button>
+        <button type="button" class="album-filter" data-album-filter="isa">Isa y yo</button>
+        <button type="button" class="album-filter" data-album-filter="guests">Invitados</button>
+        <button type="button" class="album-filter" data-album-filter="misa">Misa</button>
+        <button type="button" class="album-filter" data-album-filter="reception">Recepción</button>
+      </nav>
+
       <!-- Photos Gallery Grid -->
       <div class="gallery-grid" id="galleryGrid">
         <!-- Photos will be dynamically rendered here -->
@@ -1136,7 +1202,7 @@
       <span id="txtFooterLove">Hecho con mucho amor para</span>
       <span>Isa</span>
       <div id="txtFooterEvent">Mis XV Años • 2026</div>
-      <div class="version-tag">v1.00.12</div>
+      <div class="version-tag">v1.00.13</div>
     </footer>
 
   </div><!-- /container -->
@@ -1147,6 +1213,10 @@
     <img src="" alt="Foto en grande" class="lightbox-img" id="lightboxImg" />
     <div class="lightbox-caption" id="lightboxCaption"></div>
   </div>
+
+  <button type="button" class="back-to-filters" id="backToFilters">
+    <i class="fa-solid fa-arrow-up"></i> <span>Volver a filtros</span>
+  </button>
 
   <!-- JAVASCRIPT -->
   <script>
@@ -1222,6 +1292,8 @@
         rsvpCall: "Llamar",
         albumTitle: "Álbum de Recuerdos 📸",
         albumDesc: "Sube tus fotos de la fiesta y déjale un lindo mensaje a Isa",
+        filterAll: "Todas",
+        backToFilters: "Volver a filtros",
         labelName: "Tu Nombre / Familia:",
         placeholderName: "Ej: Familia Morales / Tía Rosa",
         labelAlbum: "Álbum:",
@@ -1282,6 +1354,8 @@
         rsvpCall: "Call",
         albumTitle: "Memory Album 📸",
         albumDesc: "Upload your party photos and leave a sweet message for Isa",
+        filterAll: "All",
+        backToFilters: "Back to filters",
         labelName: "Your Name / Family:",
         placeholderName: "E.g. Morales Family / Aunt Rosa",
         labelAlbum: "Album:",
@@ -1358,10 +1432,14 @@
     const guestNameInput = document.getElementById("guestName");
     const photoAlbumSelect = document.getElementById("photoAlbum");
     const guestMessageInput = document.getElementById("guestMessage");
+    const albumFilters = document.getElementById("albumFilters");
+    const backToFilters = document.getElementById("backToFilters");
+    const filterButtons = Array.from(document.querySelectorAll(".album-filter"));
 
     let currentPhotoBase64 = "";
     let selectedFileName = "";
     let livePhotos = [];
+    let activeAlbumFilter = "all";
 
     // --- APPLY LANGUAGE FUNCTION ---
     function applyLanguage(lang) {
@@ -1409,6 +1487,12 @@
       // Album Section
       document.getElementById("txtAlbumTitle").textContent = t.albumTitle;
       document.getElementById("txtAlbumDesc").textContent = t.albumDesc;
+      document.querySelector('[data-album-filter="all"]').textContent = t.filterAll;
+      document.querySelector('[data-album-filter="isa"]').textContent = t.albumOptions.isa;
+      document.querySelector('[data-album-filter="guests"]').textContent = t.albumOptions.guests;
+      document.querySelector('[data-album-filter="misa"]').textContent = t.albumOptions.misa;
+      document.querySelector('[data-album-filter="reception"]').textContent = t.albumOptions.reception;
+      backToFilters.querySelector("span").textContent = t.backToFilters;
       document.querySelector("#lblGuestName span").textContent = t.labelName;
       guestNameInput.placeholder = t.placeholderName;
       document.querySelector("#lblPhotoAlbum span").textContent = t.labelAlbum;
@@ -1444,6 +1528,30 @@
     // Language switch button handlers
     langEsBtn.addEventListener("click", () => applyLanguage("es"));
     langEnBtn.addEventListener("click", () => applyLanguage("en"));
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeAlbumFilter = button.dataset.albumFilter;
+        filterButtons.forEach((filterButton) => {
+          filterButton.classList.toggle("active", filterButton === button);
+        });
+        renderGalleryCards();
+      });
+    });
+
+    function updateStickyFilterState() {
+      const filtersTop = albumFilters.getBoundingClientRect().top;
+      const galleryBottom = galleryGrid.getBoundingClientRect().bottom;
+      const isStuck = filtersTop <= 0 && galleryBottom > albumFilters.offsetHeight;
+      albumFilters.classList.toggle("is-stuck", isStuck);
+      backToFilters.classList.toggle("visible", isStuck);
+    }
+
+    window.addEventListener("scroll", updateStickyFilterState, { passive: true });
+    window.addEventListener("resize", updateStickyFilterState);
+    backToFilters.addEventListener("click", () => {
+      albumFilters.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
 
     // Trigger Camera & Gallery Pickers
     btnCamera.addEventListener("click", () => cameraInput.click());
@@ -1562,8 +1670,11 @@
       const t = i18n[currentLang];
       galleryGrid.innerHTML = "";
       updatePhotoCarousel();
+      const visiblePhotos = activeAlbumFilter === "all"
+        ? livePhotos
+        : livePhotos.filter((item) => item.album === activeAlbumFilter);
 
-      if (livePhotos.length === 0) {
+      if (visiblePhotos.length === 0) {
         galleryGrid.innerHTML = `
           <div class="empty-gallery">
             <i class="fa-solid fa-camera-retro"></i>
@@ -1574,7 +1685,7 @@
         return;
       }
 
-      livePhotos.forEach((item) => {
+      visiblePhotos.forEach((item) => {
         const dateStr = item.createdAt ? new Date(item.createdAt.toDate ? item.createdAt.toDate() : item.createdAt).toLocaleDateString(currentLang === 'es' ? 'es-ES' : 'en-US', {
           day: 'numeric',
           month: 'short',
